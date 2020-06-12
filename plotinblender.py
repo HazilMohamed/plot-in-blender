@@ -1,13 +1,23 @@
 import subprocess
 import math
+import json
+
+plots = ["barPlot"]
 
 def plot(X,y,plotName):
-    X_str = ""
-    y_str = ""
-    for elt in X:
-	    X_str = X_str + elt + "//" 
-    X_str = X_str[:-2]   
-    for val in y:
-	    y_str = y_str + str(math.ceil(val)) + "//"
-    y_str = y_str[:-2]
-    res = subprocess.check_output(["/usr/share/blender/blender", "-P", "plots.py", "--", X_str, y_str, plotName])
+	X = X.tolist()
+	y = y.tolist()
+	if plotName not in plots:
+		print("Plot not available")
+		return
+	if len(X) != len(y):
+		print("Required same number of X and y")
+		return
+	data = {
+		"X":X,
+		"y":y,
+		"plotName":plotName
+		}
+	data = json.dumps(data)
+	res = subprocess.check_output(["/usr/share/blender/blender","-P", "plots.py", "--", data])
+	print(res)

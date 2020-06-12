@@ -2,6 +2,7 @@ import bpy
 import math
 import bmesh
 import sys
+import json
 
 #available plots go here
 plots = ["barPlot"]
@@ -12,32 +13,13 @@ def init():
     bpy.ops.object.select_all(action = "SELECT")
     bpy.ops.object.delete()
 
-    #values from outside
+    #json data values
     argv = sys.argv
     argv = argv[argv.index("--") + 1:]
-    X = argv[0].strip('[]').split('//')
-    y = argv[1].strip('[]').split('//')
+    argv = json.loads(argv[0])
+   
+    eval(argv["plotName"])(argv["X"],argv["y"])  
     
-    #validatation
-    try:
-        if len(argv) != 3:
-            print("Need 3 args X, y, plotName")
-            return
-        if len(X) != len(y):
-            print("Same number of X,y required")
-            return
-    except:
-       print("Some error")
-       return
-    else:   
-        y = list(map(int, y))     
-        plotName = argv[2]
-        if plotName in plots:
-            eval(plotName)(X,y)
-        else:
-            print("plotName not found")
-            return
- 
 #function to create text objects       
 def textObj(text, textType, textPos, textRot, textScale=(0.75,0.75,0.75)):
     font_curve = bpy.data.curves.new(type="FONT",name="Font Curve")
@@ -73,7 +55,6 @@ def barPlot(X,y):
     maxVal = max(y)
     total = len(X)
     X_scale = 11/total
-    print(X_scale)
     y_scale = math.ceil(maxVal/10)
     size_bar = 1
     cursor = size_bar/2
@@ -121,7 +102,7 @@ def barPlot(X,y):
         )
         bpy.ops.object.mode_set( mode = 'OBJECT' )
         bpy.ops.object.origin_set(type='ORIGIN_CENTER_OF_MASS', center='MEDIAN')
-        textObj(X[itr], "X_plot", (0, (X_scale-size_bar)/2+cursor, -1), (math.radians(90),math.radians(90),math.radians(90)),(.1, .1, .1)) 
+        textObj(X[itr], "X_plot", (0, (X_scale-size_bar)/2+cursor, -1), (math.radians(90),math.radians(90),math.radians(90)),(min(1,X_scale), min(1,X_scale), min(1,X_scale))) 
         cursor += X_scale
 
     bpy.ops.object.select_all(action = 'DESELECT')
