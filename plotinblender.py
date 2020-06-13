@@ -2,11 +2,13 @@ import subprocess
 import math
 import json
 
-plots = ["barPlot"]
+plots = ["barPlot","scatterPlot"]
 
 def plot(X,y,plotName):
-	X = X.tolist()
-	y = y.tolist()
+	if type(X) != list:
+		X = X.tolist()
+	if type(y) != list:
+		y = y.tolist()
 	if plotName not in plots:
 		print("Plot not available")
 		return

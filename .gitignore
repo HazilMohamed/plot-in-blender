@@ -1,7 +1,10 @@
 #My Blend files
 *.blend
+*.blend1
+sample.py
 test.py
 *.csv
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

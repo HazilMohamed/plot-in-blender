@@ -5,7 +5,7 @@ import sys
 import json
 
 #available plots go here
-plots = ["barPlot"]
+plots = ["barPlot","scatterPlot"]
 
 def init():
     
@@ -79,6 +79,9 @@ def barPlot(X,y):
             bpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='MEDIAN')
             break
     bpy.ops.transform.translate(value=(0, 0-co.y, 0-co.z), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)))
+    
+    bpy.ops.object.modifier_add(type='WIREFRAME')
+    bpy.context.object.modifiers["Wireframe"].thickness = 0.05
 
     #numbering y-axis
     for num in range(11):    
@@ -105,6 +108,52 @@ def barPlot(X,y):
         textObj(X[itr], "X_plot", (0, (X_scale-size_bar)/2+cursor, -1), (math.radians(90),math.radians(90),math.radians(90)),(min(1,X_scale), min(1,X_scale), min(1,X_scale))) 
         cursor += X_scale
 
+    bpy.ops.object.select_all(action = 'DESELECT')
+    
+def scatterPlot(X,y):
+    #local variables
+    y_maxVal = max(y)
+    X_maxVal = max(X)
+    X_scale = math.ceil(X_maxVal/10)
+    y_scale = math.ceil(y_maxVal/10)
+    total = len(X)
+
+    #adding 2D grid
+    bpy.ops.mesh.primitive_grid_add(size=11, location=(0, 0, 0), rotation=(math.radians(0), math.radians(-90), math.radians(0)),x_subdivisions=12,y_subdivisions=12)
+    bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+    bpy.ops.object.mode_set(mode = 'EDIT')
+    bpy.ops.mesh.select_all(action = 'DESELECT')
+    obj = bpy.context.edit_object
+    me = obj.data
+    bm = bmesh.from_edit_mesh(me)
+    bm.faces.active = None
+
+    #changing origin to origin of plot
+    for v in bm.verts:
+        if v.index == 0:
+            v.select = True
+            co = v.co
+            bpy.context.scene.cursor.location = (co.x,co.y,co.z)
+            bpy.ops.object.mode_set(mode = 'OBJECT')
+            bpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='MEDIAN')
+            break
+    bpy.ops.transform.translate(value=(0, 0-co.y, 0-co.z), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)))
+    
+    bpy.ops.object.modifier_add(type='WIREFRAME')
+    bpy.context.object.modifiers["Wireframe"].thickness = 0.05
+
+    #numbering y-axis and X-axis
+    for num in range(11):    
+        textObj(int(num*y_scale), "y_plot", (0, -1, num), (math.radians(90),math.radians(0) ,math.radians(90)),textScale=(0.4,0.4,0.4))
+        textObj(int(num*X_scale), "X_plot", (0, num, -1), (math.radians(90),math.radians(0),math.radians(90)),textScale=(0.4,0.4,0.4)) 
+
+    #plotting
+    for itr in range(total):
+        #plotting sphere
+        bpy.ops.mesh.primitive_uv_sphere_add(segments=8, ring_count=8, radius=0.25, enter_editmode=False, align='WORLD', location=(0,X[itr]/X_scale,y[itr]/y_scale))
+
+        bpy.context.active_object.name = "scatter "+str(itr)
+        
     bpy.ops.object.select_all(action = 'DESELECT')
         
 if __name__ == "__main__":
