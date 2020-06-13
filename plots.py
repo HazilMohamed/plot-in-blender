@@ -18,7 +18,34 @@ def init():
     argv = argv[argv.index("--") + 1:]
     argv = json.loads(argv[0])
    
-    eval(argv["plotName"])(argv["X"],argv["y"])  
+    eval(argv["plotName"])(argv["X"],argv["y"]) 
+
+def create2DGrid(gridSize,gridLoc,gridRot,x_sub,y_sub):
+    bpy.ops.mesh.primitive_grid_add(size=gridSize, location=gridLoc, rotation=gridRot, x_subdivisions=x_sub, y_subdivisions=y_sub)
+    bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+    bpy.ops.object.mode_set(mode = 'EDIT')
+    bpy.ops.mesh.select_all(action = 'DESELECT')
+    obj = bpy.context.edit_object
+    me = obj.data
+    bm = bmesh.from_edit_mesh(me)
+    bm.faces.active = None
+
+    #changing origin to origin of plot
+    for v in bm.verts:
+        if v.index == 0:
+            v.select = True
+            co = v.co
+            bpy.context.scene.cursor.location = (co.x,co.y,co.z)
+            bpy.ops.object.mode_set(mode = 'OBJECT')
+            bpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='MEDIAN')
+            break
+    bpy.ops.transform.translate(value=(0, 0-co.y, 0-co.z), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)))
+    
+    #adding wireframe modifier
+    bpy.ops.object.modifier_add(type='WIREFRAME')
+    bpy.context.object.modifiers["Wireframe"].thickness = 0.05
+    return
+
     
 #function to create text objects       
 def textObj(text, textType, textPos, textRot, textScale=(0.75,0.75,0.75)):
@@ -54,34 +81,13 @@ def barPlot(X,y):
     #local variables
     maxVal = max(y)
     total = len(X)
-    X_scale = 11/total
+    X_scale = 10/total
     y_scale = math.ceil(maxVal/10)
     size_bar = 1
     cursor = size_bar/2
 
-    #adding grid 0.01 is used to push grid little back else face mix will happen
-    bpy.ops.mesh.primitive_grid_add(size=11, location=(-(size_bar/2)+0.01, 0, 0), rotation=(math.radians(0), math.radians(-90), math.radians(0)), x_subdivisions=12, y_subdivisions=2)
-    bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
-    bpy.ops.object.mode_set(mode = 'EDIT')
-    bpy.ops.mesh.select_all(action = 'DESELECT')
-    obj = bpy.context.edit_object
-    me = obj.data
-    bm = bmesh.from_edit_mesh(me)
-    bm.faces.active = None
-
-    #changing origin to origin of plot
-    for v in bm.verts:
-        if v.index == 0:
-            v.select = True
-            co = v.co
-            bpy.context.scene.cursor.location = (co.x,co.y,co.z)
-            bpy.ops.object.mode_set(mode = 'OBJECT')
-            bpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='MEDIAN')
-            break
-    bpy.ops.transform.translate(value=(0, 0-co.y, 0-co.z), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)))
-    
-    bpy.ops.object.modifier_add(type='WIREFRAME')
-    bpy.context.object.modifiers["Wireframe"].thickness = 0.05
+    #adding 2D grid 0.01 is used to push grid little back else face mix will happen
+    create2DGrid(10,(-(size_bar/2)+0.01, 0, 0),(math.radians(0), math.radians(-90), math.radians(0)),11,2)
 
     #numbering y-axis
     for num in range(11):    
@@ -111,6 +117,7 @@ def barPlot(X,y):
     bpy.ops.object.select_all(action = 'DESELECT')
     
 def scatterPlot(X,y):
+    
     #local variables
     y_maxVal = max(y)
     X_maxVal = max(X)
@@ -119,28 +126,7 @@ def scatterPlot(X,y):
     total = len(X)
 
     #adding 2D grid
-    bpy.ops.mesh.primitive_grid_add(size=11, location=(0, 0, 0), rotation=(math.radians(0), math.radians(-90), math.radians(0)),x_subdivisions=12,y_subdivisions=12)
-    bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
-    bpy.ops.object.mode_set(mode = 'EDIT')
-    bpy.ops.mesh.select_all(action = 'DESELECT')
-    obj = bpy.context.edit_object
-    me = obj.data
-    bm = bmesh.from_edit_mesh(me)
-    bm.faces.active = None
-
-    #changing origin to origin of plot
-    for v in bm.verts:
-        if v.index == 0:
-            v.select = True
-            co = v.co
-            bpy.context.scene.cursor.location = (co.x,co.y,co.z)
-            bpy.ops.object.mode_set(mode = 'OBJECT')
-            bpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='MEDIAN')
-            break
-    bpy.ops.transform.translate(value=(0, 0-co.y, 0-co.z), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)))
-    
-    bpy.ops.object.modifier_add(type='WIREFRAME')
-    bpy.context.object.modifiers["Wireframe"].thickness = 0.05
+    create2DGrid(10,(0, 0, 0),(math.radians(0), math.radians(-90), math.radians(0)),11,11)
 
     #numbering y-axis and X-axis
     for num in range(11):    
@@ -150,7 +136,7 @@ def scatterPlot(X,y):
     #plotting
     for itr in range(total):
         #plotting sphere
-        bpy.ops.mesh.primitive_uv_sphere_add(segments=8, ring_count=8, radius=0.25, enter_editmode=False, align='WORLD', location=(0,X[itr]/X_scale,y[itr]/y_scale))
+        bpy.ops.mesh.primitive_uv_sphere_add(segments=6, ring_count=6, radius=0.2, enter_editmode=False, align='WORLD', location=(0,X[itr]/X_scale,y[itr]/y_scale))
 
         bpy.context.active_object.name = "scatter "+str(itr)
         
