@@ -2,7 +2,8 @@ import subprocess
 import math
 import json
 
-plots = ["barPlot","scatterPlot"]
+plots = ["barPlot","scatterPlot"]					#Available Plots go here
+BLENDER_PATH = "/usr/share/blender/blender"			#Path to Blender file
 
 def plot(X,y,plotName):
 	if type(X) != list:
@@ -10,11 +11,9 @@ def plot(X,y,plotName):
 	if type(y) != list:
 		y = y.tolist()
 	if plotName not in plots:
-		print("Plot not available")
-		return
+		raise ValueError("Plot not available")
 	if len(X) != len(y):
-		print("Required same number of X and y")
-		return
+		raise IndexError("Required same number of X and y values")
 	isValid = validate(X,y,plotName)
 	if isValid:
 		data = {
@@ -23,8 +22,11 @@ def plot(X,y,plotName):
 			"plotName":plotName
 			}
 		data = json.dumps(data)
-		res = subprocess.check_output(["/usr/share/blender/blender","-P", "plots.py", "--", data])
-		print(res)
+		try:
+			res = subprocess.check_output([BLENDER_PATH,"-P", "plots.py", "--", data])
+			print(res)
+		except OSError as e:
+			raise OSError(str(e))	
 	return
 
 def validate(X,y,plotName):
@@ -32,18 +34,17 @@ def validate(X,y,plotName):
 	if plotName == "barPlot":
 		for i in y:
 			if i < 0:
-				print("Negative values cannot be plotted")
 				isValid = False
-				return
+				raise ValueError("Negative values cannot be plotted")
 	elif plotName == "scatterPlot":
 		for i in X,y:
 			for j in i:
 				if type(j) != (int or float):
-					print("Only numbers can be plotted")
 					isValid = False
-					return
+					raise TypeError("Only numbers can be plotted")
 				if j < 0:
-					print("Negative values cannot be plotted")
+					#TODO:
+					#Supporting negative values too
 					isValid = False
-					return
+					raise ValueError("Negative values cannot be plotted")
 	return isValid

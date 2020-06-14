@@ -4,9 +4,6 @@ import bmesh
 import sys
 import json
 
-#available plots go here
-plots = ["barPlot","scatterPlot"]
-
 def init():
     
     #deleting previous
@@ -20,6 +17,7 @@ def init():
    
     eval(argv["plotName"])(argv["X"],argv["y"]) 
 
+#function to create 2D grid
 def create2DGrid(gridSize,gridLoc,gridRot,x_sub,y_sub):
     bpy.ops.mesh.primitive_grid_add(size=gridSize, location=gridLoc, rotation=gridRot, x_subdivisions=x_sub, y_subdivisions=y_sub)
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
@@ -78,6 +76,7 @@ def transform(mode, type, size_bar, X_scale, indices):
     
 
 def barPlot(X,y):
+    
     #local variables
     maxVal = max(y)
     total = len(X)
