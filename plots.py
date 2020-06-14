@@ -24,9 +24,10 @@ def init():
         eval(argv["plotName"])(argv["X"],argv["y"],argv["z"])
 
 #function to create 2D grid
-def create2DGrid(gridSize,gridLoc,gridRot,x_sub,y_sub):
+def create2DGrid(gridName, gridSize, gridLoc, gridRot, x_sub, y_sub):
     bpy.ops.mesh.primitive_grid_add(size=gridSize, location=gridLoc, rotation=gridRot, x_subdivisions=x_sub, y_subdivisions=y_sub)
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+    bpy.context.active_object.name = "Grid " + gridName
     bpy.ops.object.mode_set(mode = 'EDIT')
     bpy.ops.mesh.select_all(action = 'DESELECT')
     obj = bpy.context.edit_object
@@ -43,10 +44,12 @@ def create2DGrid(gridSize,gridLoc,gridRot,x_sub,y_sub):
             bpy.ops.object.mode_set(mode = 'OBJECT')
             bpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='MEDIAN')
             break
-    if co.z == 0:
-        bpy.ops.transform.translate(value=(0-co.x, 0-co.y, 0), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)))
-    else:
+    if co.y == co.z:
         bpy.ops.transform.translate(value=(0, 0-co.y, 0-co.z), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)))
+    elif co.x == co.y:
+        bpy.ops.transform.translate(value=(0-co.x, 0-co.y, 0), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)))
+    elif co.x == co.z:
+        bpy.ops.transform.translate(value=(0-co.x, 0, 0-co.z), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)))
     
     #adding wireframe modifier
     bpy.ops.object.modifier_add(type='WIREFRAME')
@@ -95,7 +98,7 @@ def barPlot(X,y):
     cursor = size_bar/2
 
     #adding 2D grid 0.01 is used to push grid little back else face mix will happen
-    create2DGrid(10,(-(size_bar/2)+0.01, 0, 0),(math.radians(0), math.radians(-90), math.radians(0)),11,2)
+    create2DGrid("X_Y", 10, (-(size_bar/2)+0.01, 0, 0), (math.radians(0), math.radians(-90), math.radians(0)), 11, 2)
 
     #numbering y-axis
     for num in range(11):    
@@ -134,7 +137,7 @@ def scatterPlot2D(X,y):
     total = len(X)
 
     #adding 2D grid
-    create2DGrid(10,(0, 0, 0),(math.radians(0), math.radians(-90), math.radians(0)),11,11)
+    create2DGrid("X-Y", 10, (0, 0, 0), (math.radians(0), math.radians(-90), math.radians(0)), 11, 11)
 
     #numbering y-axis and X-axis
     for num in range(11):    
@@ -162,8 +165,9 @@ def scatterPlot3D(X,y,z):
     total = len(X)
 
     #adding 3D grid
-    create2DGrid(10, (0, 0, 0), (math.radians(0), math.radians(-90), math.radians(0)), 11, 11)
-    create2DGrid(10, (0, 0, 0), (math.radians(0), math.radians(0), math.radians(0)), 11, 11)
+    create2DGrid("Y-Z", 10, (0, 0, 0), (math.radians(0), math.radians(-90), math.radians(0)), 11, 11)
+    create2DGrid("X-Y", 10, (0, 0, 0), (math.radians(0), math.radians(0), math.radians(0)), 11, 11)
+    create2DGrid("Z-X", 10, (0, 0, 0), (math.radians(90), math.radians(0), math.radians(0)), 11, 11)
 
     #numbering X-axis, y-axis and z-axis
     for num in range(11):    
