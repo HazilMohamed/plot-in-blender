@@ -4,6 +4,9 @@ import bmesh
 import sys
 import json
 
+plots2D = ["barPlot","scatterPlot2D"]
+plots3D = ["scatterPlot3D"]
+ 
 def init():
     
     #deleting previous
@@ -14,8 +17,11 @@ def init():
     argv = sys.argv
     argv = argv[argv.index("--") + 1:]
     argv = json.loads(argv[0])
-   
-    eval(argv["plotName"])(argv["X"],argv["y"]) 
+
+    if argv["plotName"] in plots2D:
+        eval(argv["plotName"])(argv["X"],argv["y"])
+    elif argv["plotName"] in plots3D:
+        eval(argv["plotName"])(argv["X"],argv["y"],argv["z"])
 
 #function to create 2D grid
 def create2DGrid(gridSize,gridLoc,gridRot,x_sub,y_sub):
@@ -37,7 +43,10 @@ def create2DGrid(gridSize,gridLoc,gridRot,x_sub,y_sub):
             bpy.ops.object.mode_set(mode = 'OBJECT')
             bpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='MEDIAN')
             break
-    bpy.ops.transform.translate(value=(0, 0-co.y, 0-co.z), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)))
+    if co.z == 0:
+        bpy.ops.transform.translate(value=(0-co.x, 0-co.y, 0), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)))
+    else:
+        bpy.ops.transform.translate(value=(0, 0-co.y, 0-co.z), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)))
     
     #adding wireframe modifier
     bpy.ops.object.modifier_add(type='WIREFRAME')
@@ -115,7 +124,7 @@ def barPlot(X,y):
 
     bpy.ops.object.select_all(action = 'DESELECT')
     
-def scatterPlot(X,y):
+def scatterPlot2D(X,y):
     
     #local variables
     y_maxVal = max(y)
@@ -136,6 +145,36 @@ def scatterPlot(X,y):
     for itr in range(total):
         #plotting sphere
         bpy.ops.mesh.primitive_uv_sphere_add(segments=6, ring_count=6, radius=0.2, enter_editmode=False, align='WORLD', location=(0,X[itr]/X_scale,y[itr]/y_scale))
+
+        bpy.context.active_object.name = "scatter "+str(itr)
+        
+    bpy.ops.object.select_all(action = 'DESELECT')
+
+def scatterPlot3D(X,y,z):
+    
+    #local variables
+    X_maxVal = max(X)
+    y_maxVal = max(y)
+    z_maxVal = max(z)
+    X_scale = math.ceil(X_maxVal/10)
+    y_scale = math.ceil(y_maxVal/10)
+    z_scale = math.ceil(z_maxVal/10)
+    total = len(X)
+
+    #adding 3D grid
+    create2DGrid(10, (0, 0, 0), (math.radians(0), math.radians(-90), math.radians(0)), 11, 11)
+    create2DGrid(10, (0, 0, 0), (math.radians(0), math.radians(0), math.radians(0)), 11, 11)
+
+    #numbering X-axis, y-axis and z-axis
+    for num in range(11):    
+        textObj(int(num*X_scale), "X_plot", (num, -1, 0), (math.radians(0),math.radians(0),math.radians(90)),textScale=(0.4,0.4,0.4))
+        textObj(int(num*y_scale), "y_plot", (0, num, -1), (math.radians(90),math.radians(0) ,math.radians(90)),textScale=(0.4,0.4,0.4)) 
+        textObj(int(num*z_scale), "z_plot", (0, -1, num), (math.radians(90),math.radians(0),math.radians(90)),textScale=(0.4,0.4,0.4))
+    
+    #plotting
+    for itr in range(total):
+        #plotting sphere
+        bpy.ops.mesh.primitive_uv_sphere_add(segments=6, ring_count=6, radius=0.2, enter_editmode=False, align='WORLD', location=(X[itr]/X_scale,y[itr]/y_scale,z[itr]/z_scale))
 
         bpy.context.active_object.name = "scatter "+str(itr)
         
