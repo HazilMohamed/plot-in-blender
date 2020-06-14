@@ -25,7 +25,7 @@ def plot(X, y, plotName, z=None):
 			}
 		data = json.dumps(data)
 		try:
-			res = subprocess.check_output([BLENDER_PATH,"-P", "plots.py", "--", data])
+			res = subprocess.check_output([BLENDER_PATH,"-P", "ploting.py", "--", data])
 			print(res)
 		except OSError as e:
 			raise OSError(str(e))	
