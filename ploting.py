@@ -4,18 +4,21 @@ import sys
 import json
 
 #Available Plots
-plots2D = ["barPlot","scatterPlot2D"]
-plots3D = ["scatterPlot3D"]
+plotsOneArgs = ["histPlot"]
+plotsTwoArgs = ["barPlot","scatterPlot2D"]
+plotsThreeArgs = ["scatterPlot3D"]
 
 #Paths
 sys.path.append('src/plots/barPlot/')
 sys.path.append('src/plots/scatterPlot')
+sys.path.append('src/plots/histPlot')
 sys.path.append('src/tools/')
 
 #Importing plots
 from barPlot import barPlot
 from scatterPlot2D import scatterPlot2D
 from scatterPlot3D import scatterPlot3D
+from histPlot import histPlot
  
 def init():
     
@@ -28,9 +31,11 @@ def init():
     argv = argv[argv.index("--") + 1:]
     argv = json.loads(argv[0])
 
-    if argv["plotName"] in plots2D:
+    if argv["plotName"] in plotsOneArgs:
+        eval(argv["plotName"])(argv["X"])
+    elif argv["plotName"] in plotsTwoArgs:
         eval(argv["plotName"])(argv["X"],argv["y"])
-    elif argv["plotName"] in plots3D:
+    elif argv["plotName"] in plotsThreeArgs:
         eval(argv["plotName"])(argv["X"],argv["y"],argv["z"])
         
 if __name__ == "__main__":
