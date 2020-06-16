@@ -1,5 +1,3 @@
-# data-visualization-using-blender
-A python tool to analyse data using Blender
 ## data-visualization-using-blender
 ### What it is ?
 This is a python library to analyse data using Blender, so far the following plots can be visualized. 
