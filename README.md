@@ -1,6 +1,6 @@
-## data-visualization-using-blender
+## plot-in-blender
 ### What it is ?
-This is a python library to analyse data using Blender, so far the following plots can be visualized. 
+This is a python library to analyse data, so far the following plots can be visualized in Blender. 
 - BarPlot
 - ScatterPlot (2D and 3D)
 - HistPlot
@@ -32,7 +32,7 @@ bl.plot(X,bins=20,plotName="histPlot")             #For HistPlot
 ```
 
 ### Contribute
-If you have a new idea for plotting or find out a bug or something, please raise an issue or pull request.
+If you have a new idea for plotting or find out a bug or something, please feel free to raise an issue or pull request.
 
 ### TODO
 - Need to implement plots for negative values too.
