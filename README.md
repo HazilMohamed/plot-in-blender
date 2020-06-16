@@ -28,7 +28,7 @@ To plot, use the function ``plot``
 bl.plot(X,y,plotName="barPlot")                    #For BarPlot
 bl.plot(X,y,plotName="scatterPlot")                #For 2D ScatterPlot
 bl.plot(X,y,z,plotName="scatterPlot")              #For 3D ScatterPlot
-bl.plot(X,bins=20,plotName="countPlot")            #For HistPlot
+bl.plot(X,bins=20,plotName="histPlot")             #For HistPlot
 ```
 
 ### Contribute
