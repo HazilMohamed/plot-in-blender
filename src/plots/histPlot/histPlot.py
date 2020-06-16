@@ -7,30 +7,31 @@ from create2DGrid import create2DGrid
 from textObj import textObj
 from transform import transform
 
-def histPlot(X):
-    
+def histPlot(X, bins=None):
+
     #local variables
     X.sort()
     maxVal = X[-1]
     minVal = X[0]
-    bins = math.ceil(math.sqrt(len(X)))
-    binWidth = math.ceil((maxVal-minVal)/bins)
+    if bins is None:
+        values = math.ceil(math.sqrt(len(X)))
+        bins = math.ceil((maxVal-minVal)/values)
     hist = 0 
     count = 0
     X_new = []
     y_new = []
     size_bar = 1
     cursor = size_bar/2
-    
-    X_new = list(range(math.ceil(minVal-1),math.ceil(maxVal),binWidth))
-    current = binWidth
+    X_new = list(range(math.ceil(minVal-1),math.ceil(maxVal),bins))
+    current = bins
+
     while count < len(X):
         if X[count] <= current:
             hist += 1
             count += 1
         else:
             y_new.append(hist)
-            current += binWidth
+            current += bins
             hist = 0 
     y_new.append(hist)
     y_scale = math.ceil(max(y_new)/10)
@@ -61,8 +62,8 @@ def histPlot(X):
         )
         bpy.ops.object.mode_set( mode = 'OBJECT' )
         bpy.ops.object.origin_set(type='ORIGIN_CENTER_OF_MASS', center='MEDIAN')
-        textObj(X_new[itr], "X_plot", (0, X_scale*itr, -1), (math.radians(90),math.radians(0),math.radians(90)),(min(1,X_scale/2), min(1,X_scale/2), min(1,X_scale/2))) 
+        textObj(X_new[itr], "X_plot", (0, X_scale*itr, -1), (math.radians(90),math.radians(0),math.radians(90)),(min(1,X_scale/1.5), min(1,X_scale/1.5), min(1,X_scale/1.5))) 
         cursor += X_scale
-    textObj(max(X_new)+binWidth, "X_plot", (0, 10, -1), (math.radians(90),math.radians(0),math.radians(90)),(min(1,X_scale/2), min(1,X_scale/2), min(1,X_scale/2)))    
+    textObj(max(X_new)+bins, "X_plot", (0, 10, -1), (math.radians(90),math.radians(0),math.radians(90)),(min(1,X_scale/1.5), min(1,X_scale/1.5), min(1,X_scale/1.5)))    
     bpy.ops.object.select_all(action = 'DESELECT')
     return

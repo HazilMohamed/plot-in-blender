@@ -32,7 +32,7 @@ def init():
     argv = json.loads(argv[0])
 
     if argv["plotName"] in plotsOneArgs:
-        eval(argv["plotName"])(argv["X"])
+        eval(argv["plotName"])(argv["X"],argv["bins"])
     elif argv["plotName"] in plotsTwoArgs:
         eval(argv["plotName"])(argv["X"],argv["y"])
     elif argv["plotName"] in plotsThreeArgs:
