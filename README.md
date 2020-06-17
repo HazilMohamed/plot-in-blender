@@ -23,12 +23,28 @@ import plotinblender as bl
 ```
 
 ### Usage
-To plot, use the function ``plot``
+The plotinblender accepts both lists and numpy arrays as arguments
 ```python
-bl.plot(X,y,plotName="barPlot")                    #For BarPlot
-bl.plot(X,y,plotName="scatterPlot")                #For 2D ScatterPlot
-bl.plot(X,y,z,plotName="scatterPlot")              #For 3D ScatterPlot
-bl.plot(X,bins=20,plotName="histPlot")             #For HistPlot
+import numpy as np
+X = np.array(np.random.rand(500)*500)
+y = np.array(np.random.rand(500)*500)
+z = np.array(np.random.rand(500)*500)
+```
+To plot, use the following functions:
+- BarPlot
+```python
+bl.barPlot(X,y)
+```
+- ScatterPlot
+```python
+#Two arguments gives 2D plots while Three gives 3D plots
+bl.scatterPlot(X, y)
+bl.scatterPlot(X, y, z)
+```
+- HistPlot
+```python
+#Bins is optional value
+bl.histPlot(X, bins)
 ```
 
 ### Contribute

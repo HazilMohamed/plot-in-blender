@@ -2,12 +2,18 @@ import bpy
 import bmesh
 import math
 import sys
+import json
+
+sys.path.append("src/tools/")
 
 from create2DGrid import create2DGrid
 from textObj import textObj
 from transform import transform
+from clearScreen import clearScreen
 
 def barPlot(X,y):
+    #To delete default objects
+    clearScreen()
     
     #local variables
     maxVal = max(y)
@@ -47,3 +53,12 @@ def barPlot(X,y):
 
     bpy.ops.object.select_all(action = 'DESELECT')
     return
+
+
+if __name__ == "__main__":
+    #Json parsing
+    argv = sys.argv
+    argv = argv[argv.index("--") + 1:]
+    argv = json.loads(argv[0])
+
+    barPlot(argv["X"],argv["y"])

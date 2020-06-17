@@ -1,11 +1,18 @@
 import bpy
 import math
+import sys
+import json
+
+sys.path.append("src/tools/")
 
 from create2DGrid import create2DGrid
 from textObj import textObj
 from transform import transform
+from clearScreen import clearScreen
 
 def scatterPlot2D(X,y):
+    #To delete default objects
+    clearScreen()
     
     #local variables
     y_maxVal = max(y)
@@ -30,3 +37,12 @@ def scatterPlot2D(X,y):
         bpy.context.active_object.name = "scatter "+str(itr)
         
     bpy.ops.object.select_all(action = 'DESELECT')
+    return
+
+if __name__ == "__main__":
+    #Json parsing
+    argv = sys.argv
+    argv = argv[argv.index("--") + 1:]
+    argv = json.loads(argv[0])
+
+    scatterPlot2D(argv["X"],argv["y"])

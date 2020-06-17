@@ -2,13 +2,19 @@ import bpy
 import bmesh
 import math
 import sys
+import json
+
+sys.path.append("src/tools/")
 
 from create2DGrid import create2DGrid
 from textObj import textObj
 from transform import transform
+from clearScreen import clearScreen
 
 def histPlot(X, bins=None):
-
+    #To delete default objects
+    clearScreen()
+    
     #local variables
     X.sort()
     maxVal = X[-1]
@@ -67,3 +73,11 @@ def histPlot(X, bins=None):
     textObj(max(X_new)+bins, "X_plot", (0, 10, -1), (math.radians(90),math.radians(0),math.radians(90)),(min(1,X_scale/1.5), min(1,X_scale/1.5), min(1,X_scale/1.5)))    
     bpy.ops.object.select_all(action = 'DESELECT')
     return
+
+if __name__ == "__main__":
+    #Json parsing
+    argv = sys.argv
+    argv = argv[argv.index("--") + 1:]
+    argv = json.loads(argv[0])
+
+    histPlot(argv["X"],argv["bins"])
