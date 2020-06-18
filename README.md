@@ -33,18 +33,18 @@ z = np.array(np.random.rand(500)*500)
 To plot, use the following functions:
 - BarPlot
 ```python
-bl.barPlot(X,y)
+bl.barPlot(X=X, y=y)
 ```
 - ScatterPlot
 ```python
 #Two arguments gives 2D plots while Three gives 3D plots
-bl.scatterPlot(X, y)
-bl.scatterPlot(X, y, z)
+bl.scatterPlot(X=X, y=y)
+bl.scatterPlot(X=X, y=y, z=z)
 ```
 - HistPlot
 ```python
 #Bins is optional value
-bl.histPlot(X, bins)
+bl.histPlot(X=X, bins=35)
 ```
 
 ### Contribute

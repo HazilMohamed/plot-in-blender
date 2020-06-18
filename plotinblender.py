@@ -21,8 +21,10 @@ def barPlot(X,y):
 		}
 	data = json.dumps(data)
 	try:
-		res = subprocess.check_output([BLENDER_PATH,"-P", "src/plots/barPlot/barPlot.py", "--", data])
-		print(res)
+		res = subprocess.Popen([BLENDER_PATH,"-P", "src/plots/barPlot/barPlot.py", "--", data],
+			stdout=subprocess.PIPE) 
+		output = res.communicate()
+		print(output)
 	except OSError as e:
 		raise OSError(str(e))	
 	return
@@ -52,8 +54,10 @@ def scatterPlot(X,y,z=None):
 		}
 		data = json.dumps(data)
 		try:
-			res = subprocess.check_output([BLENDER_PATH,"-P", "src/plots/scatterPlot/scatterPlot3D.py", "--", data])
-			print(res)
+			res = subprocess.Popen([BLENDER_PATH,"-P", "src/plots/scatterPlot/scatterPlot3D.py", "--", data],
+				stdout=subprocess.PIPE) 
+			output = res.communicate()
+			print(output)
 		except OSError as e:
 			raise OSError(str(e))	
 	else:
@@ -73,8 +77,10 @@ def scatterPlot(X,y,z=None):
 		}
 		data = json.dumps(data)
 		try:
-			res = subprocess.check_output([BLENDER_PATH,"-P", "src/plots/scatterPlot/scatterPlot2D.py", "--", data])
-			print(res)
+			res = subprocess.Popen([BLENDER_PATH,"-P", "src/plots/scatterPlot/scatterPlot2D.py", "--", data],
+				stdout=subprocess.PIPE) 
+			output = res.communicate()
+			print(output)
 		except OSError as e:
 			raise OSError(str(e))
 	return
@@ -99,8 +105,10 @@ def histPlot(X,bins=None):
 		}
 	data = json.dumps(data)
 	try:
-		res = subprocess.check_output([BLENDER_PATH,"-P", "src/plots/histPlot/histPlot.py", "--", data])
-		print(res)
+		res = subprocess.Popen([BLENDER_PATH,"-P", "src/plots/histPlot/histPlot.py", "--", data],
+			stdout=subprocess.PIPE) 
+		output = res.communicate()
+		print(output)
 	except OSError as e:
 		raise OSError(str(e))
 	return
