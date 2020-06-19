@@ -4,6 +4,7 @@ This is a python library to analyse data, so far the following plots can be visu
 - BarPlot
 - ScatterPlot (2D and 3D)
 - HistPlot
+- SurfacePlot
 
 
 <p align="center"><img src="https://raw.githubusercontent.com/hazilMohamed/data-visualization-using-blender/master/res/screenshots/3D-scatterPlot.png"></p>
@@ -45,6 +46,12 @@ bl.scatterPlot(X=X, y=y, z=z)
 ```python
 #Bins is optional value
 bl.histPlot(X=X, bins=35)
+```
+- SurfacePlot
+```python
+#SurfacePlot requires 2D arrays
+arr = np.arange(20).reshape(4,5)
+bl.surfacePlot(z=arr)
 ```
 
 ### Contribute

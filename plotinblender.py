@@ -113,5 +113,27 @@ def histPlot(X,bins=None):
 		raise OSError(str(e))
 	return
 
+def surfacePlot(z):
+	if type(z) != list:
+		z = z.tolist()
+	for l in z:
+		if not isinstance(l,list):
+			raise TypeError("Required a 2D array")
+		for i in l:
+			if type(i) not in [int,float]:
+				raise TypeError("Only numbers can be plotted")	
+	data = {
+			"z":z
+		}
+	data = json.dumps(data)
+	try:
+		res = subprocess.Popen([BLENDER_PATH,"-P", "src/plots/surfacePlot/surfacePlot.py", "--", data],
+			stdout=subprocess.PIPE) 
+		output = res.communicate()
+		print(output)
+	except OSError as e:
+		raise OSError(str(e))
+	return
+
 	
 
