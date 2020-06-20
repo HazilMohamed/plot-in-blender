@@ -49,7 +49,7 @@ bl.histPlot(X=X, bins=35)
 ```
 - SurfacePlot
 ```python
-#SurfacePlot requires 2D arrays
+#SurfacePlot requires 2D arrays of size m*n
 arr = np.arange(20).reshape(4,5)
 bl.surfacePlot(z=arr)
 ```

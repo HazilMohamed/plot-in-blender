@@ -114,9 +114,12 @@ def histPlot(X,bins=None):
 	return
 
 def surfacePlot(z):
+	length = len(z[0])
 	if type(z) != list:
 		z = z.tolist()
 	for l in z:
+		if len(l) != length:
+			raise ValueError("Same number of elements required in each row")
 		if not isinstance(l,list):
 			raise TypeError("Required a 2D array")
 		for i in l:
