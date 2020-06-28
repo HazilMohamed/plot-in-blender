@@ -7,7 +7,7 @@ This is a python library to analyse data, so far the following plots can be visu
 - SurfacePlot
 
 
-<p align="center"><img src="https://raw.githubusercontent.com/hazilMohamed/data-visualization-using-blender/master/res/screenshots/3D-scatterPlot.png"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/hazilMohamed/data-visualization-using-blender/master/res/screenshots/3D-surfacePlot.png"></p>
 
 ### Requirements
 - Blender 2.82 or higher.
@@ -58,8 +58,8 @@ bl.surfacePlot(z=arr)
 If you have a new idea for plotting or find out a bug or something, please feel free to raise an issue or pull request.
 
 ### TODO
+- ~~Materials for objects in Blender.~~
 - Need to implement plots for negative values too.
 - Planning to implement an FBX viewer for viewing plots.
-- Materials for objects in Blender.
 - Categorical plots.
 
