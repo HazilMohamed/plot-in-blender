@@ -10,6 +10,7 @@ from create2DGrid import create2DGrid
 from textObj import textObj
 from transform import transform
 from clearScreen import clearScreen
+from createMaterial import createMaterial
 
 def surfacePlot(z):
     #To delete default objects
@@ -39,6 +40,7 @@ def surfacePlot(z):
     #Adding surface
     bpy.ops.mesh.primitive_grid_add(size=10, location=(5,5,0),x_subdivisions=X,y_subdivisions=y)
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+    createMaterial("SurfaceMaterial",(7,4,4,1))
     bpy.context.active_object.name = "Surface"
     bpy.ops.object.mode_set(mode = 'EDIT') 
     bpy.ops.mesh.select_all(action = 'DESELECT')

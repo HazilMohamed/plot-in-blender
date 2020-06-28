@@ -1,6 +1,8 @@
 import bpy
 import bmesh
 
+from createMaterial import createMaterial
+
 def textObj(text, textType, textPos, textRot, textScale=(0.75,0.75,0.75)):
     font_curve = bpy.data.curves.new(type="FONT",name="Font Curve")
     font_curve.body = str(text)
@@ -11,4 +13,8 @@ def textObj(text, textType, textPos, textRot, textScale=(0.75,0.75,0.75)):
     font_obj.location = textPos
     font_obj.rotation_euler = textRot
     font_obj.scale = textScale
+    bpy.context.view_layer.objects.active = font_obj
+    bpy.context.active_object.select_set(True)
+    bpy.ops.object.convert(target="MESH")
+    createMaterial("NumberMaterial",(5,6,1,1))
     return

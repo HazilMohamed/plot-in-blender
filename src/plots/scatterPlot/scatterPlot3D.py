@@ -9,6 +9,7 @@ from create2DGrid import create2DGrid
 from textObj import textObj
 from transform import transform
 from clearScreen import clearScreen
+from createMaterial import createMaterial
 
 def scatterPlot3D(X,y,z):
     #To delete default objects
@@ -38,8 +39,8 @@ def scatterPlot3D(X,y,z):
     for itr in range(total):
         #plotting sphere
         bpy.ops.mesh.primitive_uv_sphere_add(segments=6, ring_count=6, radius=0.2, enter_editmode=False, align='WORLD', location=(X[itr]/X_scale,y[itr]/y_scale,z[itr]/z_scale))
-
         bpy.context.active_object.name = "scatter "+str(itr)
+        createMaterial("ScatterMaterial",(7,4,2,1))
         
     bpy.ops.object.select_all(action = 'DESELECT')
     return

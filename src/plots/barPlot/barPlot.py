@@ -10,6 +10,7 @@ from create2DGrid import create2DGrid
 from textObj import textObj
 from transform import transform
 from clearScreen import clearScreen
+from createMaterial import createMaterial
 
 def barPlot(X,y):
     #To delete default objects
@@ -35,7 +36,8 @@ def barPlot(X,y):
         #initilializing a plane
         bpy.ops.mesh.primitive_plane_add(size=size_bar, enter_editmode=False, location=(0, cursor, 0))
         bpy.context.active_object.name = "Bar "+str(X[itr])
-        
+        createMaterial("BarMaterial",(7,6,1,1))
+
         #scaling bar plots
         transform('EDIT', 'EDGE', size_bar, X_scale, [2,3]) #[2,3] reps rhs of plane from user perspective
         

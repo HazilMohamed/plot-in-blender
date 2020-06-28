@@ -88,10 +88,10 @@ def scatterPlot(X,y,z=None):
 def histPlot(X,bins=None):
 	if type(X) != list:
 		X = X.tolist()
-	if bins is not None and bins > len(X):
-		raise IOError("bins cannot be greater than total length")
 	if bins is not None and type(bins) != int:
 		raise TypeError("invalid data type bin")
+	if bins is not None and bins > len(X):
+		raise IOError("bins cannot be greater than total length")
 	for i in X:
 		if type(i) not in [int,float]:
 			raise TypeError("Only numbers can be plotted")

@@ -1,6 +1,8 @@
 import bpy
 import bmesh
 
+from createMaterial import createMaterial
+
 def create2DGrid(gridName, gridSize, gridLoc, gridRot, x_sub, y_sub):
     bpy.ops.mesh.primitive_grid_add(size=gridSize, location=gridLoc, rotation=gridRot, x_subdivisions=x_sub, y_subdivisions=y_sub)
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
@@ -31,4 +33,5 @@ def create2DGrid(gridName, gridSize, gridLoc, gridRot, x_sub, y_sub):
     #adding wireframe modifier
     bpy.ops.object.modifier_add(type='WIREFRAME')
     bpy.context.object.modifiers["Wireframe"].thickness = 0.05
+    createMaterial("GridMaterial",(1,0,0,1))
     return
