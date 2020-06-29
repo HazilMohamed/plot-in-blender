@@ -53,6 +53,16 @@ bl.histPlot(X=X, bins=35)
 arr = np.arange(20).reshape(4,5)
 bl.surfacePlot(z=arr)
 ```
+To give material for objects, uses the following arguments when using plot functions:
+```python
+#R = Red, G = Green, B = Blue, A = Alpha 
+#These variable can take positive values
+gridMaterial = (R,G,B,A)           #Used to give material color on grids
+numberMaterial = (R,G,B,A)         #Used to give material color on numbers
+barMaterial = (R,G,B,A)            #Used to give material color on bars of CountPlot, HistPlot
+scatterMaterial = (R,G,B,A)        #Used to give material color on spheres of ScatterPlot
+surfaceMaterial = (R,G,B,A)        #Used to give material color on plane of SurfacePlot
+``` 
 
 ### Contribute
 If you have a new idea for plotting or find out a bug or something, please feel free to raise an issue or pull request.
