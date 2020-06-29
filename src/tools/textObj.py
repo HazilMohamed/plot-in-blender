@@ -3,7 +3,7 @@ import bmesh
 
 from createMaterial import createMaterial
 
-def textObj(text, textType, textPos, textRot, textScale=(0.75,0.75,0.75)):
+def textObj(text, textType, textPos, textRot, textScale=(0.75,0.75,0.75), numberMaterial=(1,1,1,1)):
     font_curve = bpy.data.curves.new(type="FONT",name="Font Curve")
     font_curve.body = str(text)
     font_obj = bpy.data.objects.new(textType + " " + str(text), font_curve)
@@ -16,5 +16,5 @@ def textObj(text, textType, textPos, textRot, textScale=(0.75,0.75,0.75)):
     bpy.context.view_layer.objects.active = font_obj
     bpy.context.active_object.select_set(True)
     bpy.ops.object.convert(target="MESH")
-    createMaterial("NumberMaterial",(5,6,1,1))
+    createMaterial("NumberMaterial",numberMaterial)
     return

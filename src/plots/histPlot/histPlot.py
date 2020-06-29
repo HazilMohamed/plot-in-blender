@@ -12,7 +12,7 @@ from transform import transform
 from clearScreen import clearScreen
 from createMaterial import createMaterial
 
-def histPlot(X, bins=None):
+def histPlot(X, gridMaterial, barMaterial, numberMaterial, bins=None):
     #To delete default objects
     clearScreen()
     
@@ -45,21 +45,34 @@ def histPlot(X, bins=None):
     X_scale = 10/len(X_new)
     
     #adding 2D grid 0.01 is used to push grid little back else face mix will happen
-    create2DGrid("X-Y",10,(-(size_bar/2)+0.01, 0, 0),(math.radians(0), math.radians(-90), math.radians(0)),11,2)
+    create2DGrid(
+        gridName="X-Y", gridSize=10, gridLoc=(-(size_bar/2)+0.01, 0, 0),
+        gridRot=(math.radians(0), math.radians(-90), math.radians(0)),
+        x_sub=11, y_sub=2, gridMaterial=gridMaterial
+    )
 
     #numbering y-axis
     for num in range(11):    
-        textObj(num*y_scale, "y_plot", (-(size_bar/2), -1, num), (math.radians(90),math.radians(0) ,math.radians(90)))
+        textObj(
+            text=num*y_scale, textType="y_plot", 
+            textPos=(-(size_bar/2), -1, num), textRot=(math.radians(90),math.radians(0) ,math.radians(90)),
+            numberMaterial=numberMaterial
+        )
 
     #plotting and naming x axis
     for itr in range(len(X_new)):
         #initilializing a plane
         bpy.ops.mesh.primitive_plane_add(size=size_bar, enter_editmode=False, location=(0, cursor, 0))
         bpy.context.active_object.name = "Bar "+str(X_new[itr])
-        createMaterial("BarMaterial",(5,2,4,1))
+        createMaterial(
+            materialName="BarMaterial", diffuseColor=barMaterial
+        )
         
         #scaling bar plots
-        transform('EDIT', 'EDGE', size_bar, X_scale, [2,3]) #[2,3] reps rhs of plane from user perspective
+        transform(
+            mode='EDIT', type='EDGE', size_bar=size_bar, 
+            X_scale=X_scale, indices=[2,3]
+        ) #[2,3] reps rhs of plane from user perspective
         
         #extruding plane along z axis
         bpy.ops.object.mode_set(mode = 'EDIT')
@@ -70,9 +83,19 @@ def histPlot(X, bins=None):
         )
         bpy.ops.object.mode_set( mode = 'OBJECT' )
         bpy.ops.object.origin_set(type='ORIGIN_CENTER_OF_MASS', center='MEDIAN')
-        textObj(X_new[itr], "X_plot", (0, X_scale*itr, -1), (math.radians(90),math.radians(0),math.radians(90)),(min(1,X_scale/1.5), min(1,X_scale/1.5), min(1,X_scale/1.5))) 
+        textObj(
+            text=X_new[itr], textType="X_plot", 
+            textPos=(0, X_scale*itr, -1), textRot=(math.radians(90),math.radians(0),math.radians(90)),
+            textScale=(min(1,X_scale/1.5), min(1,X_scale/1.5), min(1,X_scale/1.5)),
+            numberMaterial=numberMaterial
+        ) 
         cursor += X_scale
-    textObj(max(X_new)+bins, "X_plot", (0, 10, -1), (math.radians(90),math.radians(0),math.radians(90)),(min(1,X_scale/1.5), min(1,X_scale/1.5), min(1,X_scale/1.5)))    
+    textObj(
+        text=max(X_new)+bins, textType="X_plot", 
+        textPos=(0, 10, -1), textRot=(math.radians(90),math.radians(0),math.radians(90)),
+        textScale=(min(1,X_scale/1.5), min(1,X_scale/1.5), min(1,X_scale/1.5)), 
+        numberMaterial=numberMaterial
+    )    
     bpy.ops.object.select_all(action = 'DESELECT')
     return
 
@@ -82,4 +105,7 @@ if __name__ == "__main__":
     argv = argv[argv.index("--") + 1:]
     argv = json.loads(argv[0])
 
-    histPlot(argv["X"],argv["bins"])
+    histPlot(
+        X=argv["X"], bins=argv["bins"],
+        gridMaterial=argv["gridMaterial"],barMaterial=argv["barMaterial"],numberMaterial=argv["numberMaterial"]
+    )

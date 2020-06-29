@@ -5,21 +5,36 @@ import sys
 
 BLENDER_PATH = "/usr/share/blender/blender"					#Path to Blender file
 
-def barPlot(X,y):
+def barPlot(X, y, barMaterial=(1,0,0,1), numberMaterial=(1,1,1,1), gridMaterial=(1,1,1,1)):
 	if type(X) != list:
 		X = X.tolist()
+	
 	if type(y) != list:
 		y = y.tolist()
+	
 	if len(X) != len(y):
 		raise IndexError("Required same number of X and y values")
+
+	for i in [barMaterial, numberMaterial, gridMaterial]:
+		if len(i) != 4:
+			raise IOError("The material arguments value tuple in the format (R,G,B,A)")
+		for j in i:
+			if type(j) not in [int, float] or j < 0:
+				raise ValueError("Only positive numbers can be used in material")
+	
 	for i in y:
 		if i < 0:
 			raise ValueError("Negative values cannot be plotted")
+	
 	data = {
 			"X":X,
-			"y":y
+			"y":y,
+			"barMaterial":barMaterial,
+			"gridMaterial":gridMaterial,
+			"numberMaterial":numberMaterial
 		}
 	data = json.dumps(data)
+	
 	try:
 		res = subprocess.Popen([BLENDER_PATH,"-P", "src/plots/barPlot/barPlot.py", "--", data],
 			stdout=subprocess.PIPE) 
@@ -29,11 +44,21 @@ def barPlot(X,y):
 		raise OSError(str(e))	
 	return
 
-def scatterPlot(X,y,z=None):
+def scatterPlot(X, y, scatterMaterial=(1,0,0,1), numberMaterial=(1,1,1,1), gridMaterial=(1,1,1,1), z=None):
 	if type(X) != list:
 		X = X.tolist()
+	
 	if type(y) != list:
 		y = y.tolist()
+	
+	for i in [scatterMaterial, numberMaterial, gridMaterial]:
+		if len(i) != 4:
+			raise IOError("The material arguments value tuple in the format (R,G,B,A)")
+		for j in i:
+			if type(j) not in [int, float] or j < 0:
+				raise ValueError("Only positive numbers can be used in material")
+	
+	#validation for 3D scatterPlot
 	if z is not None:
 		if type(z) != list:
 			z = z.tolist()	
@@ -50,7 +75,10 @@ def scatterPlot(X,y,z=None):
 		data = {
 			"X":X,
 			"y":y,
-			"z":z
+			"z":z,
+			"scatterMaterial":scatterMaterial,
+			"gridMaterial":gridMaterial,
+			"numberMaterial":numberMaterial			
 		}
 		data = json.dumps(data)
 		try:
@@ -60,9 +88,12 @@ def scatterPlot(X,y,z=None):
 			print(output)
 		except OSError as e:
 			raise OSError(str(e))	
+	
+	#validation for 2D scatterPlot
 	else:
 		if len(X) != len(y):
 			raise IndexError("Required same number of X and y values")
+		
 		for i in X,y:
 			for j in i:
 				if type(j) not in [int,float]:
@@ -71,11 +102,16 @@ def scatterPlot(X,y,z=None):
 					#TODO:
 					#Supporting negative values too
 					raise ValueError("Negative values cannot be plotted")
+		
 		data = {
 			"X":X,
-			"y":y
+			"y":y,
+			"scatterMaterial":scatterMaterial,
+			"gridMaterial":gridMaterial,
+			"numberMaterial":numberMaterial				
 		}
 		data = json.dumps(data)
+		
 		try:
 			res = subprocess.Popen([BLENDER_PATH,"-P", "src/plots/scatterPlot/scatterPlot2D.py", "--", data],
 				stdout=subprocess.PIPE) 
@@ -85,13 +121,23 @@ def scatterPlot(X,y,z=None):
 			raise OSError(str(e))
 	return
 
-def histPlot(X,bins=None):
+def histPlot(X, barMaterial=(1,0,0,1), numberMaterial=(1,1,1,1), gridMaterial=(1,1,1,1),bins=None):
 	if type(X) != list:
 		X = X.tolist()
+	
 	if bins is not None and type(bins) != int:
 		raise TypeError("invalid data type bin")
+	
 	if bins is not None and bins > len(X):
 		raise IOError("bins cannot be greater than total length")
+	
+	for i in [barMaterial, numberMaterial, gridMaterial]:
+		if len(i) != 4:
+			raise IOError("The material arguments value tuple in the format (R,G,B,A)")
+		for j in i:
+			if type(j) not in [int, float] or j < 0:
+				raise ValueError("Only positive numbers can be used in material")
+	
 	for i in X:
 		if type(i) not in [int,float]:
 			raise TypeError("Only numbers can be plotted")
@@ -99,11 +145,16 @@ def histPlot(X,bins=None):
 			#TODO:
 			#Supporting negative values too
 			raise ValueError("Negative values cannot be plotted")
+	
 	data = {
 			"X":X,
-			"bins":bins
+			"bins":bins,
+			"barMaterial":barMaterial,
+			"gridMaterial":gridMaterial,
+			"numberMaterial":numberMaterial
 		}
 	data = json.dumps(data)
+	
 	try:
 		res = subprocess.Popen([BLENDER_PATH,"-P", "src/plots/histPlot/histPlot.py", "--", data],
 			stdout=subprocess.PIPE) 
@@ -113,10 +164,18 @@ def histPlot(X,bins=None):
 		raise OSError(str(e))
 	return
 
-def surfacePlot(z):
+def surfacePlot(z, surfaceMaterial=(1,0,0,1), numberMaterial=(1,1,1,1), gridMaterial=(1,1,1,1)):
 	length = len(z[0])
 	if type(z) != list:
 		z = z.tolist()
+	
+	for i in [surfaceMaterial, numberMaterial, gridMaterial]:
+		if len(i) != 4:
+			raise IOError("The material arguments value tuple in the format (R,G,B,A)")
+		for j in i:
+			if type(j) not in [int, float] or j < 0:
+				raise ValueError("Only positive numbers can be used in material")
+	
 	for l in z:
 		if len(l) != length:
 			raise ValueError("Same number of elements required in each row")
@@ -125,10 +184,15 @@ def surfacePlot(z):
 		for i in l:
 			if type(i) not in [int,float]:
 				raise TypeError("Only numbers can be plotted")	
+	
 	data = {
-			"z":z
+			"z":z,
+			"surfaceMaterial":surfaceMaterial,
+			"gridMaterial":gridMaterial,
+			"numberMaterial":numberMaterial
 		}
 	data = json.dumps(data)
+	
 	try:
 		res = subprocess.Popen([BLENDER_PATH,"-P", "src/plots/surfacePlot/surfacePlot.py", "--", data],
 			stdout=subprocess.PIPE) 

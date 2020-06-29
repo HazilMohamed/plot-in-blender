@@ -12,7 +12,7 @@ from transform import transform
 from clearScreen import clearScreen
 from createMaterial import createMaterial
 
-def surfacePlot(z):
+def surfacePlot(z, gridMaterial, surfaceMaterial, numberMaterial):
     #To delete default objects
     clearScreen()    
     
@@ -25,22 +25,51 @@ def surfacePlot(z):
     y_scale = math.ceil(y/10)
     
     #adding 3 2D grids for 3D space
-    create2DGrid("Y-Z", 10, (0, 0, 0), (math.radians(0), math.radians(-90), math.radians(0)), 11, 11)
-    create2DGrid("X-Y", 10, (0, 0, 0), (math.radians(0), math.radians(0), math.radians(0)), 11, 11)
-    create2DGrid("Z-X", 10, (0, 0, 0), (math.radians(90), math.radians(0), math.radians(0)), 11, 11)
+    create2DGrid(
+        gridName="Y_Z",gridSize=10,gridLoc=(0, 0, 0), 
+        gridRot=(math.radians(0), math.radians(-90), math.radians(0)), 
+        x_sub=11, y_sub=11, 
+        gridMaterial=gridMaterial
+    )
+    create2DGrid(
+        gridName="X_Y",gridSize=10,gridLoc=(0, 0, 0), 
+        gridRot=(math.radians(0), math.radians(0), math.radians(0)), 
+        x_sub=11, y_sub=11, 
+        gridMaterial=gridMaterial
+    )
+    create2DGrid(
+        gridName="Z_X",gridSize=10,gridLoc=(0, 0, 0), 
+        gridRot=(math.radians(90), math.radians(0), math.radians(0)), 
+        x_sub=11, y_sub=11, 
+        gridMaterial=gridMaterial
+    )
     
     #numbering X-axis, y-axis and z-axis
     for num in range(X//X_scale):    
-        textObj(int(num*X_scale), "X_plot", ((10/(X-1))*num*X_scale, -1, 0), (math.radians(0),math.radians(0),math.radians(90)),textScale=(0.4,0.4,0.4))
+        textObj(
+            text=int(num*X_scale), textType="X_plot", 
+            textPos=((10/(X-1))*num*X_scale, -1, 0), textRot=(math.radians(0),math.radians(0) ,math.radians(90)),
+            textScale=(0.4,0.4,0.4), numberMaterial=numberMaterial
+        )
     for num in range(y//y_scale): 
-        textObj(int(num*y_scale), "y_plot", (0, (10/(y-1))*num*y_scale, -1), (math.radians(90),math.radians(0) ,math.radians(90)),textScale=(0.4,0.4,0.4))
-    for num in range(11): 
-        textObj(int(num*z_scale), "z_plot", (0, -1, num), (math.radians(90),math.radians(0),math.radians(90)),textScale=(0.4,0.4,0.4))
+        textObj(
+            text=int(num*y_scale), textType="y_plot", 
+            textPos=(0, (10/(y-1))*num*y_scale, -1), textRot=(math.radians(90),math.radians(0) ,math.radians(90)),
+            textScale=(0.4,0.4,0.4), numberMaterial=numberMaterial
+        )
+    for num in range(11):
+        textObj(
+            text=int(num*z_scale), textType="z_plot", 
+            textPos=(0, -1, num), textRot=(math.radians(90),math.radians(0) ,math.radians(90)),
+            textScale=(0.4,0.4,0.4), numberMaterial=numberMaterial
+        )
     
     #Adding surface
     bpy.ops.mesh.primitive_grid_add(size=10, location=(5,5,0),x_subdivisions=X,y_subdivisions=y)
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
-    createMaterial("SurfaceMaterial",(7,4,4,1))
+    createMaterial(
+        materialName="SurfaceMaterial", diffuseColor=surfaceMaterial
+    )
     bpy.context.active_object.name = "Surface"
     bpy.ops.object.mode_set(mode = 'EDIT') 
     bpy.ops.mesh.select_all(action = 'DESELECT')
@@ -70,4 +99,7 @@ if __name__ == "__main__":
     argv = argv[argv.index("--") + 1:]
     argv = json.loads(argv[0])
 
-    surfacePlot(argv["z"])
+    surfacePlot(
+        z=argv["z"],
+        gridMaterial=argv["gridMaterial"], surfaceMaterial=argv["surfaceMaterial"], numberMaterial=argv["numberMaterial"]
+    )
