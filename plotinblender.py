@@ -5,7 +5,10 @@ import sys
 
 BLENDER_PATH = "/usr/share/blender/blender"					#Path to Blender file
 
-def barPlot(X, y, barMaterial=(1,0,0,1), numberMaterial=(1,1,1,1), gridMaterial=(1,1,1,1)):
+def barPlot(X=None, y=None, barMaterial=(1,0,0,1), numberMaterial=(1,1,1,1), gridMaterial=(1,1,1,1)):
+	if X is None or y is None:
+		raise TypeError("Must pass both X and y")
+
 	if type(X) != list:
 		X = X.tolist()
 	
@@ -44,7 +47,9 @@ def barPlot(X, y, barMaterial=(1,0,0,1), numberMaterial=(1,1,1,1), gridMaterial=
 		raise OSError(str(e))	
 	return
 
-def scatterPlot(X, y, scatterMaterial=(1,0,0,1), numberMaterial=(1,1,1,1), gridMaterial=(1,1,1,1), z=None):
+def scatterPlot(X=None, y=None, z=None, scatterMaterial=(1,0,0,1), numberMaterial=(1,1,1,1), gridMaterial=(1,1,1,1)):
+	if X is None or y is None:
+		raise TypeError("Must pass both X and y")
 	if type(X) != list:
 		X = X.tolist()
 	
@@ -121,7 +126,10 @@ def scatterPlot(X, y, scatterMaterial=(1,0,0,1), numberMaterial=(1,1,1,1), gridM
 			raise OSError(str(e))
 	return
 
-def histPlot(X, barMaterial=(1,0,0,1), numberMaterial=(1,1,1,1), gridMaterial=(1,1,1,1),bins=None):
+def histPlot(X=None, bins=None, barMaterial=(1,0,0,1), numberMaterial=(1,1,1,1), gridMaterial=(1,1,1,1)):
+	if X is None:
+		raise ValueError("Must pass X")
+
 	if type(X) != list:
 		X = X.tolist()
 	
@@ -164,7 +172,10 @@ def histPlot(X, barMaterial=(1,0,0,1), numberMaterial=(1,1,1,1), gridMaterial=(1
 		raise OSError(str(e))
 	return
 
-def surfacePlot(z, surfaceMaterial=(1,0,0,1), numberMaterial=(1,1,1,1), gridMaterial=(1,1,1,1)):
+def surfacePlot(z=None, surfaceMaterial=(1,0,0,1), numberMaterial=(1,1,1,1), gridMaterial=(1,1,1,1)):
+	if z is None:
+		raise ValueError("Must pass z")
+	
 	length = len(z[0])
 	if type(z) != list:
 		z = z.tolist()
