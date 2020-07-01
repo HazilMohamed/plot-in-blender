@@ -17,7 +17,7 @@ This is a python library to analyse data, so far the following plots can be visu
 - Clone the repo to your directory.
 - Change the BLENDER_PATH to your blender executable.
 
-### Importing
+### Import
 Import the library to your project
 ```shell
 import plotinblender as bl
@@ -34,36 +34,36 @@ z = np.array(np.random.rand(500)*500)
 To plot, use the following functions:
 - BarPlot
 ```python
-bl.barPlot(X=X, y=y)
+# The Material args are optional to use.
+# The Material tuple is in the format (Red, Green, Blue, Alpha).
+
+bl.barPlot(X=X, y=y, gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1), barMaterial = (1,0,0,1))
 ```
 - ScatterPlot
 ```python
-#Two arguments gives 2D plots while Three gives 3D plots
-bl.scatterPlot(X=X, y=y)
-bl.scatterPlot(X=X, y=y, z=z)
+# The Material args are optional to use.
+# The Material tuple is in the format (Red, Green, Blue, Alpha).
+# Two arguments gives 2D plots while Three gives 3D plots.
+
+bl.scatterPlot(X=X, y=y, gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1), scatterMaterial = (1,0,0,1))
+bl.scatterPlot(X=X, y=y, z=z, gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1), scatterMaterial = (1,0,0,1))
 ```
 - HistPlot
 ```python
-#Bins is optional value
-bl.histPlot(X=X, bins=35)
+# The Material, Bins args are optional to use.
+# The Material tuple is in the format (Red, Green, Blue, Alpha).
+
+bl.histPlot(X=X, bins=35, gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1), barMaterial = (1,0,0,1))
 ```
 - SurfacePlot
 ```python
-#SurfacePlot requires 2D arrays of size m*n
-arr = np.arange(20).reshape(4,5)
-bl.surfacePlot(z=arr)
-```
-To give material for objects, uses the following arguments when using plot functions:
-```python
-#R = Red, G = Green, B = Blue, A = Alpha 
-#These variable can take positive values
-gridMaterial = (R,G,B,A)           #Used to give material color on grids
-numberMaterial = (R,G,B,A)         #Used to give material color on numbers
-barMaterial = (R,G,B,A)            #Used to give material color on bars of CountPlot, HistPlot
-scatterMaterial = (R,G,B,A)        #Used to give material color on spheres of ScatterPlot
-surfaceMaterial = (R,G,B,A)        #Used to give material color on plane of SurfacePlot
-``` 
+# SurfacePlot requires 2D arrays of size m*n.
+# The Material args are optional to use.
+# The Material tuple is in the format (Red, Green, Blue, Alpha).
 
+arr = np.arange(20).reshape(4,5)
+bl.surfacePlot(z=arr, gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1), surfaceMaterial = (1,0,0,1))
+```
 ### Contribute
 If you have a new idea for plotting or find out a bug or something, please feel free to raise an issue or pull request.
 
