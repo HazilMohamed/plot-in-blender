@@ -53,7 +53,7 @@ bl.scatterPlot(X=X, y=y, z=z, gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,
 # The Material, Bins args are optional to use.
 # The Material tuple is in the format (Red, Green, Blue, Alpha).
 
-bl.histPlot(X=X, bins=35, gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1), barMaterial = (1,0,0,1))
+bl.histPlot(X=X, bins=35, gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1))
 ```
 - SurfacePlot
 ```python

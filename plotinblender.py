@@ -126,7 +126,7 @@ def scatterPlot(X=None, y=None, z=None, scatterMaterial=(1,0,0,1), numberMateria
 			raise OSError(str(e))
 	return
 
-def histPlot(X=None, bins=None, barMaterial=(1,0,0,1), numberMaterial=(1,1,1,1), gridMaterial=(1,1,1,1)):
+def histPlot(X=None, bins=None, cat=None, numberMaterial=(1,1,1,1), gridMaterial=(1,1,1,1)):
 	if X is None:
 		raise ValueError("Must pass X")
 
@@ -139,13 +139,13 @@ def histPlot(X=None, bins=None, barMaterial=(1,0,0,1), numberMaterial=(1,1,1,1),
 	if bins is not None and bins > len(X):
 		raise IOError("bins cannot be greater than total length")
 	
-	for i in [barMaterial, numberMaterial, gridMaterial]:
+	for i in [numberMaterial, gridMaterial]:
 		if len(i) != 4:
 			raise IOError("The material arguments value tuple in the format (R,G,B,A)")
 		for j in i:
 			if type(j) not in [int, float] or j < 0:
 				raise ValueError("Only positive numbers can be used in material")
-	
+		
 	for i in X:
 		if type(i) not in [int,float]:
 			raise TypeError("Only numbers can be plotted")
@@ -153,11 +153,23 @@ def histPlot(X=None, bins=None, barMaterial=(1,0,0,1), numberMaterial=(1,1,1,1),
 			#TODO:
 			#Supporting negative values too
 			raise ValueError("Negative values cannot be plotted")
-	
+		
+	if cat is not None:
+		if type(cat) != list:
+			cat = cat.tolist()
+		if len(cat) != len(X):
+			raise ValueError("Required same number of lengths")
+	if cat is None:
+		cat = [1]*len(X)
+	if len(set(cat)) > 8:
+		raise ValueError("cat can take up to 8 values")
+	newX = []
+	newX.extend([list(a) for a in zip(X, cat)])
+
 	data = {
-			"X":X,
+			"X":newX,
 			"bins":bins,
-			"barMaterial":barMaterial,
+			"cat":cat,
 			"gridMaterial":gridMaterial,
 			"numberMaterial":numberMaterial
 		}
