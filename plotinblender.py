@@ -161,8 +161,10 @@ def histPlot(X=None, bins=None, cat=None, numberMaterial=(1,1,1,1), gridMaterial
 			raise ValueError("Required same number of lengths")
 	if cat is None:
 		cat = [1]*len(X)
+	
 	if len(set(cat)) > 8:
 		raise ValueError("cat can take up to 8 values")
+	
 	newX = []
 	newX.extend([list(a) for a in zip(X, cat)])
 

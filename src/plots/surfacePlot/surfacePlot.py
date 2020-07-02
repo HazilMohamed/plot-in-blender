@@ -13,10 +13,28 @@ from clearScreen import clearScreen
 from createMaterial import createMaterial
 
 def surfacePlot(z, gridMaterial, surfaceMaterial, numberMaterial):
-    #To delete default objects
+    """
+    ===========
+    SURFACEPLOT
+    ==========
+    Surface plots are diagrams of three-dimensional data. 
+    It shows a functional relationship between a designated dependent variable (z), and two independent variables (X and y).
+    Arguments :
+        z                   : The m*n array of values passed by user. It must be of number data type.
+        gridMaterial        : The material color for grid in plot. Default color is White.
+        numberMaterial      : The material color for numbers in plot. Default color is White.
+        surfaceMaterial     : The material color for surface in plot. Default color is Red.
+    Imported User Defined Functions :
+        clearScreen         : It will delete everything on the Blender Viewport .
+        textObj             : It will create a text object and convert into meshes.
+        transform           : This will be used as move function for objects.
+        createMaterial      : The materials were created and assigned if not exist.
+    """
+    # To delete default objects
     clearScreen()    
     
-    #X and y are obtained from length of 2D array
+    # Variables used in the function.
+    # X and y are obtained from length of 2D array.
     X = len(z[0])
     y = len(z)
     z_maxVal = max(list(map(max, z)))
@@ -24,7 +42,7 @@ def surfacePlot(z, gridMaterial, surfaceMaterial, numberMaterial):
     X_scale = math.ceil(X/10)
     y_scale = math.ceil(y/10)
     
-    #adding 3 2D grids for 3D space
+    # Adding 3 2D grids for 3D space.
     create2DGrid(
         gridName="Y_Z",gridSize=10,gridLoc=(0, 0, 0), 
         gridRot=(math.radians(0), math.radians(-90), math.radians(0)), 
@@ -44,7 +62,7 @@ def surfacePlot(z, gridMaterial, surfaceMaterial, numberMaterial):
         gridMaterial=gridMaterial
     )
     
-    #numbering X-axis, y-axis and z-axis
+    # Numbering X-axis, y-axis and z-axis.
     for num in range(X//X_scale):    
         textObj(
             text=int(num*X_scale), textType="X_plot", 
@@ -64,7 +82,7 @@ def surfacePlot(z, gridMaterial, surfaceMaterial, numberMaterial):
             textScale=(0.4,0.4,0.4), numberMaterial=numberMaterial
         )
     
-    #Adding surface
+    # Adding grid as surface.
     bpy.ops.mesh.primitive_grid_add(size=10, location=(5,5,0),x_subdivisions=X,y_subdivisions=y)
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
     createMaterial(
@@ -78,11 +96,12 @@ def surfacePlot(z, gridMaterial, surfaceMaterial, numberMaterial):
     bm = bmesh.from_edit_mesh(me)
     bm.faces.active = None
     
-    #plotting
-    #First, make z in a single list
+    # Plotting the values by moving grid vertices in given z axis.
+    # First, make z in a single list.
     flat_z = [item for sublist in z for item in sublist]
     z_count = 0
-    #moving each vertex in Z axis 
+    
+    # Moving each vertex in Z axis. 
     for v in bm.verts: 
         v.select = True
         bpy.ops.transform.translate(value=(0, 0, flat_z[z_count]/z_scale), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)))
@@ -94,7 +113,7 @@ def surfacePlot(z, gridMaterial, surfaceMaterial, numberMaterial):
     return
 
 if __name__ == "__main__":
-    #Json parsing
+    #Json parsing.
     argv = sys.argv
     argv = argv[argv.index("--") + 1:]
     argv = json.loads(argv[0])

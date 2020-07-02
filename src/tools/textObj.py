@@ -4,6 +4,17 @@ import bmesh
 from createMaterial import createMaterial
 
 def textObj(text, textType, textPos, textRot, textScale=(0.75,0.75,0.75), numberMaterial=(1,1,1,1)):
+    """
+    The function creates font objects and convert it into meshes.
+    Arguments:
+        text            : The text to written in the Viewport.
+        textType        : The name to be used in object Collection.
+        textPos         : The position of object in the Viewport.
+        textRot         : The rotation of object in the Viewport.
+        textScale       : The scaling of object in the ViewPort. Default value is (0.75,0.75,0.75).
+        numberMaterial  : The material color of numbers. Default value gives White.  
+    """
+    
     font_curve = bpy.data.curves.new(type="FONT",name="Font Curve")
     font_curve.body = str(text)
     font_obj = bpy.data.objects.new(textType + " " + str(text), font_curve)

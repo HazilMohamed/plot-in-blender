@@ -13,17 +13,35 @@ from clearScreen import clearScreen
 from createMaterial import createMaterial
 
 def histPlot(X, gridMaterial, numberMaterial, bins=None, cat=None):
-    #BarMaterials 
+    """
+    ========
+    HISTPLOT
+    ========
+    A histPlot is a graphical representation that organizes a group of data points into user-specified ranges.
+    Arguments :
+        X               : The array of values passed by user. It must be of number data type.
+        gridMaterial    : The material color for grid in plot. Default color is White.
+        numberMaterial  : The material color for numbers in plot. Default color is White.
+        bins            : The class interval for blocking the data values. Default value is calculated by the equation [maxVal-minVal]/sqrt(len(X))].
+        cat             : The array of categorical values respected to each value in array X.  
+    Imported User Defined Functions :
+        clearScreen     : It will delete everything on the Blender Viewport .
+        textObj         : It will create a text object and convert into meshes.
+        transform       : This will be used as move function for objects.
+        createMaterial  : The materials were created and assigned if not exist.
+    """
+
+    # 8 colors are declared right now for to use, every material is diffuse material in Blender
     barMaterial = [
         ("red",(255,0,0,1)),("yellow",(255,255,0,1)),("blue",(0,0,255,1)),
         ("green",(0,255,0,1)),("cyan",(0,255,255,1)),("purple",(255,0,255,1)),
         ("magenda",(255,0,64,1),("orange",(255,64,0,1)))
     ]
 
-    #To delete default objects
+    # Delete everything on the screen.
     clearScreen()
 
-    #local variables
+    # Variables used in the function.
     X.sort(key=lambda x: x[0])
     maxVal = X[-1][0]
     minVal = X[0][0]
@@ -39,7 +57,7 @@ def histPlot(X, gridMaterial, numberMaterial, bins=None, cat=None):
     categories = list(set(cat))
     y_cursor = size_bar/2
 
-    #dividing into lists for histograms
+    # Divide and calculate the heights of plots respect to bins.
     for category in categories:
         y_new = []
         hist = 0
@@ -60,47 +78,45 @@ def histPlot(X, gridMaterial, numberMaterial, bins=None, cat=None):
     y_scale = math.ceil(maxVal/10)
     X_scale = 10/len(X_new)
 
-    #adding 2D grid 0.01 is used to push grid little back else face mix will happen
+    # 0.01 is added in the Location is to prevent face mix.
     create2DGrid(
         gridName="X-Y", gridSize=10, gridLoc=(-(size_bar/2)+0.01, 0, 0),
         gridRot=(math.radians(0), math.radians(-90), math.radians(0)),
         x_sub=11, y_sub=2, gridMaterial=gridMaterial
     )
 
-    #numbering y-axis
+    # Y axis will be numbered.
     for num in range(11):    
         textObj(
             text=num*y_scale, textType="y_plot", 
             textPos=(-(size_bar/2), -1, num), textRot=(math.radians(90),math.radians(0) ,math.radians(90)),
             numberMaterial=numberMaterial
-        )
+        )        
 
-    # for i in range(len(categories)):
-        
-
-    #plotting and naming x axis    
+    # X axis will be numbered and graph will be plotted.
     for itr in range(len(X_new)):
         z_cursor = 0
         for i in range(len(categories)):
-            #To check if the count is 0
+            # To check category value exists in the corresponding bins or not.
             if y_cat[i][itr] == 0:
                 continue
 
-            #initilializing a plane
+            # Create a plane and extruded to a bar.
             bpy.ops.mesh.primitive_plane_add(size=size_bar, enter_editmode=False, location=(0, y_cursor, z_cursor))
+            # The Bar name will be in the format of : "Bar No: 0, Cat: Male, Count: 6"
             bpy.context.active_object.name = "Bar No: " + str(X_new[itr]) + ", Cat: " + str(categories[i]) + ", Count: " + str(y_cat[i][itr])
-            #The Bar name will be in the format of : "Bar No: 0, Cat: Male, Count: 6"
+            # The material will be created and applied.
             createMaterial(
                 materialName="BarMaterial "+ str(categories[i]), diffuseColor=barMaterial[i][1]
             )
         
-            #scaling bar plots
+            # Scaling bar plots in X axis.
             transform(
                 mode='EDIT', type='EDGE', size_bar=size_bar, 
-                X_scale=X_scale, indices=[2,3]      #[2,3] reps rhs of plane from user perspective
+                X_scale=X_scale, indices=[2,3]      #[2,3] represents RHS of plane from user perspective.
             )
         
-            #extruding plane along z axis
+            # Extruding plane in Z-axis to make into bar.
             bpy.ops.object.mode_set(mode = 'EDIT')
             bpy.ops.mesh.select_mode(type = 'FACE')
             bpy.ops.mesh.select_all(action = 'SELECT')
@@ -117,7 +133,7 @@ def histPlot(X, gridMaterial, numberMaterial, bins=None, cat=None):
             textScale=(min(1,X_scale/1.5), min(1,X_scale/1.5), min(1,X_scale/1.5)),
             numberMaterial=numberMaterial
         ) 
-    #To plot the last value of X axis
+    # To plot the last number of X axis
     textObj(
         text=max(X_new)+bins, textType="X_plot", 
         textPos=(0, 10, -1), textRot=(math.radians(90),math.radians(0),math.radians(90)),
@@ -128,7 +144,7 @@ def histPlot(X, gridMaterial, numberMaterial, bins=None, cat=None):
     return
 
 if __name__ == "__main__":
-    #Json parsing
+    # Json parsing. 
     argv = sys.argv
     argv = argv[argv.index("--") + 1:]
     argv = json.loads(argv[0])
