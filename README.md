@@ -44,16 +44,18 @@ bl.barPlot(X=X, y=y, gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1), barMa
 # The Material args are optional to use.
 # The Material tuple is in the format (Red, Green, Blue, Alpha).
 # Two arguments gives 2D plots while Three gives 3D plots.
+# The cat is optional argument used for categorical plotting.
 
-bl.scatterPlot(X=X, y=y, gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1), scatterMaterial = (1,0,0,1))
-bl.scatterPlot(X=X, y=y, z=z, gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1), scatterMaterial = (1,0,0,1))
+bl.scatterPlot(X=X, y=y, cat=["Group 1","Group 2"], gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1))
+bl.scatterPlot(X=X, y=y, z=z, cat=["Group 1","Group 2"], gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1))
 ```
 - HistPlot
 ```python
 # The Material, Bins args are optional to use.
 # The Material tuple is in the format (Red, Green, Blue, Alpha).
+# The cat is optional argument used for categorical plotting.
 
-bl.histPlot(X=X, bins=35, gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1))
+bl.histPlot(X=X, bins=35,cat=["Group 1","Group 2"], gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1))
 ```
 - SurfacePlot
 ```python
@@ -69,7 +71,7 @@ If you have a new idea for plotting or find out a bug or something, please feel 
 
 ### TODO
 - ~~Materials for objects in Blender.~~
+- ~~Categorical plots.~~
 - Need to implement plots for negative values too.
 - Planning to implement an FBX viewer for viewing plots.
-- Categorical plots.
 

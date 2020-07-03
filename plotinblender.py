@@ -3,7 +3,8 @@ import math
 import json
 import sys
 
-BLENDER_PATH = "/usr/share/blender/blender"					#Path to Blender file
+# Path to Blender file
+BLENDER_PATH = "/usr/share/blender/blender"		
 
 def barPlot(X=None, y=None, barMaterial=(1,0,0,1), numberMaterial=(1,1,1,1), gridMaterial=(1,1,1,1)):
 	if X is None or y is None:
@@ -93,6 +94,7 @@ def scatterPlot(X=None, y=None, z=None, cat=None, numberMaterial=(1,1,1,1), grid
 			"X":X,
 			"y":y,
 			"z":z,
+			"cat":cat,
 			"gridMaterial":gridMaterial,
 			"numberMaterial":numberMaterial			
 		}

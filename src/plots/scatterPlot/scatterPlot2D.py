@@ -20,7 +20,7 @@ def scatterPlot2D(X, y, cat, gridMaterial, numberMaterial):
     Arguments :
         X               : The array of quantitative values passed by user. It must be of number data type.
         y               : The array of quantitative values passed by user. It must be of number data type.
-        cat             : The array of categorical values respected to each value in (X,y).  
+        cat             : The array of categorical values respected to each value in (X, y).  
         gridMaterial    : The material color for grid in plot. Default color is White.
         numberMaterial  : The material color for numbers in plot. Default color is White.
     Imported User Defined Functions :
@@ -57,8 +57,8 @@ def scatterPlot2D(X, y, cat, gridMaterial, numberMaterial):
         x_sub=11, y_sub=11, 
         gridMaterial=gridMaterial
     )
-    # Numbering X-axis and y-axis
     
+    # Numbering X-axis and y-axis 
     for num in range(11):    
         textObj(
             text=int(num*y_scale), textType="y_plot", 
@@ -81,7 +81,7 @@ def scatterPlot2D(X, y, cat, gridMaterial, numberMaterial):
                 bpy.context.active_object.name = "Scatter No:" + str(itr) + ", Cat :" + str(categories[i]) 
                 # The material will be created and applied.
                 createMaterial(
-                    materialName="ScatterMaterial :"+str(categories[i]), diffuseColor=scatterMaterial[i][1]
+                    materialName="ScatterMaterial :" + str(categories[i]), diffuseColor=scatterMaterial[i][1]
                 )
                 mesh = bpy.context.object.data
                 for f in mesh.polygons:
