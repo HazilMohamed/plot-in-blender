@@ -165,11 +165,8 @@ def histPlot(X=None, bins=None, cat=None, numberMaterial=(1,1,1,1), gridMaterial
 	if len(set(cat)) > 8:
 		raise ValueError("cat can take up to 8 values")
 	
-	newX = []
-	newX.extend([list(a) for a in zip(X, cat)])
-
 	data = {
-			"X":newX,
+			"X":X,
 			"bins":bins,
 			"cat":cat,
 			"gridMaterial":gridMaterial,

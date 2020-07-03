@@ -33,20 +33,22 @@ def histPlot(X, gridMaterial, numberMaterial, bins=None, cat=None):
 
     # 8 colors are declared right now for to use, every material is diffuse material in Blender
     barMaterial = [
-        ("red",(255,0,0,1)),("yellow",(255,255,0,1)),("blue",(0,0,255,1)),
-        ("green",(0,255,0,1)),("cyan",(0,255,255,1)),("purple",(255,0,255,1)),
-        ("magenda",(255,0,64,1),("orange",(255,64,0,1)))
+        ("red",(1,0,0,1)),("yellow",(1,1,0,1)),("blue",(0,0,1,1)),
+        ("green",(0,1,0,1)),("cyan",(0,1,1,1)),("purple",(1,0,1,1)),
+        ("magenda",(1,0,0.25,1),("orange",(1,0.25,0,1)))
     ]
 
     # Delete everything on the screen.
     clearScreen()
 
     # Variables used in the function.
-    X.sort(key=lambda x: x[0])
-    maxVal = X[-1][0]
-    minVal = X[0][0]
+    X_cat = []
+    X_cat.extend([list(a) for a in zip(X, cat)])
+    X_cat.sort(key=lambda x: x[0])
+    maxVal = X_cat[-1][0]
+    minVal = X_cat[0][0]
     if bins is None:
-        values = math.ceil(math.sqrt(len(X)))
+        values = math.ceil(math.sqrt(len(X_cat)))
         bins = math.ceil((maxVal-minVal)/values)
     y_new = []
     size_bar = 1
@@ -64,9 +66,9 @@ def histPlot(X, gridMaterial, numberMaterial, bins=None, cat=None):
         current = bins
         hist = 0
         count = 0
-        while count < len(X):
-            if X[count][0] <= current:
-                if X[count][1] == category:
+        while count < len(X_cat):
+            if X_cat[count][0] <= current:
+                if X_cat[count][1] == category:
                     hist += 1
                 count += 1
             else:
