@@ -11,7 +11,7 @@ from transform import transform
 from clearScreen import clearScreen
 from createMaterial import createMaterial
 
-def scatterPlot2D(X, y, gridMaterial, scatterMaterial, numberMaterial):
+def scatterPlot2D(X, y, cat, gridMaterial, numberMaterial):
     """
     ==============
     SCATTERPLOT 2D
@@ -20,9 +20,9 @@ def scatterPlot2D(X, y, gridMaterial, scatterMaterial, numberMaterial):
     Arguments :
         X               : The array of quantitative values passed by user. It must be of number data type.
         y               : The array of quantitative values passed by user. It must be of number data type.
+        cat             : The array of categorical values respected to each value in (X,y).  
         gridMaterial    : The material color for grid in plot. Default color is White.
         numberMaterial  : The material color for numbers in plot. Default color is White.
-        scatterMaterial : The material color for scatters in plot. Default color is Red.
     Imported User Defined Functions :
         clearScreen     : It will delete everything on the Blender Viewport .
         textObj         : It will create a text object and convert into meshes.
@@ -30,15 +30,25 @@ def scatterPlot2D(X, y, gridMaterial, scatterMaterial, numberMaterial):
         createMaterial  : The materials were created and assigned if not exist.
     """
 
+    # 8 colors are declared right now for to use, every material is diffuse material in Blender
+    scatterMaterial = [
+        ("red",(1,0,0,1)),("yellow",(1,1,0,1)),("blue",(0,0,1,1)),
+        ("green",(0,1,0,1)),("cyan",(0,1,1,1)),("purple",(1,0,1,1)),
+        ("magenda",(1,0,0.25,1),("orange",(1,0.25,0,1)))
+    ]
+
     # Delete everything on the screen.
     clearScreen()
     
     # Variables used in the function.
+    X_y_cat = []
+    X_y_cat.extend([list(a) for a in zip(X, y, cat)])
     y_maxVal = max(y)
     X_maxVal = max(X)
     X_scale = math.ceil(X_maxVal/10)
     y_scale = math.ceil(y_maxVal/10)
     total = len(X)
+    categories = list(set(cat))
 
     # Adding 2D grid
     create2DGrid(
@@ -48,6 +58,7 @@ def scatterPlot2D(X, y, gridMaterial, scatterMaterial, numberMaterial):
         gridMaterial=gridMaterial
     )
     # Numbering X-axis and y-axis
+    
     for num in range(11):    
         textObj(
             text=int(num*y_scale), textType="y_plot", 
@@ -61,14 +72,20 @@ def scatterPlot2D(X, y, gridMaterial, scatterMaterial, numberMaterial):
         ) 
 
     # Adding a sphere in the corresponding cartesian position.
-    for itr in range(total):
-        # Creating a sphere.
-        bpy.ops.mesh.primitive_uv_sphere_add(segments=6, ring_count=6, radius=0.2, enter_editmode=False, align='WORLD', location=(0,X[itr]/X_scale,y[itr]/y_scale))
-        bpy.context.active_object.name = "scatter "+str(itr)
-        # The material will be created and applied.
-        createMaterial(
-            materialName="ScatterMaterial", diffuseColor=scatterMaterial
-        )
+    for i in range(len(categories)):
+        for itr in range(total):
+            if categories[i] == X_y_cat[itr][-1]:
+                # Creating a sphere.
+                bpy.ops.mesh.primitive_uv_sphere_add(segments=6, ring_count=6, radius=0.12, enter_editmode=False, align='WORLD', location=(0,X[itr]/X_scale,y[itr]/y_scale))
+                # The Name will be in the format : "Scatter No: 0, Cat: Male"
+                bpy.context.active_object.name = "Scatter No:" + str(itr) + ", Cat :" + str(categories[i]) 
+                # The material will be created and applied.
+                createMaterial(
+                    materialName="ScatterMaterial :"+str(categories[i]), diffuseColor=scatterMaterial[i][1]
+                )
+                mesh = bpy.context.object.data
+                for f in mesh.polygons:
+                    f.use_smooth = True
         
     bpy.ops.object.select_all(action = 'DESELECT')
     return
@@ -80,6 +97,6 @@ if __name__ == "__main__":
     argv = json.loads(argv[0])
 
     scatterPlot2D(
-        X=argv["X"], y=argv["y"],
-        gridMaterial=argv["gridMaterial"],scatterMaterial=argv["scatterMaterial"],numberMaterial=argv["numberMaterial"]
+        X=argv["X"], y=argv["y"], cat=argv["cat"],
+        gridMaterial=argv["gridMaterial"], numberMaterial=argv["numberMaterial"]
     )

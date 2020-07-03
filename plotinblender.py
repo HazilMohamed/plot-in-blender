@@ -47,7 +47,7 @@ def barPlot(X=None, y=None, barMaterial=(1,0,0,1), numberMaterial=(1,1,1,1), gri
 		raise OSError(str(e))	
 	return
 
-def scatterPlot(X=None, y=None, z=None, scatterMaterial=(1,0,0,1), numberMaterial=(1,1,1,1), gridMaterial=(1,1,1,1)):
+def scatterPlot(X=None, y=None, z=None, cat=None, numberMaterial=(1,1,1,1), gridMaterial=(1,1,1,1)):
 	if X is None or y is None:
 		raise TypeError("Must pass both X and y")
 	if type(X) != list:
@@ -56,13 +56,25 @@ def scatterPlot(X=None, y=None, z=None, scatterMaterial=(1,0,0,1), numberMateria
 	if type(y) != list:
 		y = y.tolist()
 	
-	for i in [scatterMaterial, numberMaterial, gridMaterial]:
+	for i in [numberMaterial, gridMaterial]:
 		if len(i) != 4:
 			raise IOError("The material arguments value tuple in the format (R,G,B,A)")
 		for j in i:
 			if type(j) not in [int, float] or j < 0:
 				raise ValueError("Only positive numbers can be used in material")
 	
+	if cat is not None:
+		if type(cat) != list:
+			cat = cat.tolist()
+		if len(cat) != len(X):
+			raise ValueError("Required same number of lengths")
+	
+	if cat is None:
+		cat = [1]*len(X)
+	
+	if len(set(cat)) > 8:
+		raise ValueError("cat can take up to 8 values")
+
 	#validation for 3D scatterPlot
 	if z is not None:
 		if type(z) != list:
@@ -81,7 +93,6 @@ def scatterPlot(X=None, y=None, z=None, scatterMaterial=(1,0,0,1), numberMateria
 			"X":X,
 			"y":y,
 			"z":z,
-			"scatterMaterial":scatterMaterial,
 			"gridMaterial":gridMaterial,
 			"numberMaterial":numberMaterial			
 		}
@@ -111,7 +122,7 @@ def scatterPlot(X=None, y=None, z=None, scatterMaterial=(1,0,0,1), numberMateria
 		data = {
 			"X":X,
 			"y":y,
-			"scatterMaterial":scatterMaterial,
+			"cat":cat,
 			"gridMaterial":gridMaterial,
 			"numberMaterial":numberMaterial				
 		}
