@@ -7,7 +7,7 @@ This is a python library to analyse data, so far the following plots can be visu
 - SurfacePlot
 
 
-<p align="center"><img src="https://raw.githubusercontent.com/hazilMohamed/data-visualization-using-blender/master/res/screenshots/3D-surfacePlot.png"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/hazilMohamed/data-visualization-using-blender/master/res/screenshots/3D-Plots.png"></p>
 
 ### Requirements
 - Blender 2.82 or higher.
