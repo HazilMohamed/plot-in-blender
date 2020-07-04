@@ -74,4 +74,8 @@ If you have a new idea for plotting or find out a bug or something, please feel 
 - ~~Categorical plots.~~
 - Need to implement plots for negative values too.
 - Planning to implement an FBX viewer for viewing plots.
+- Creation of Wiki.
+- Test files.
+- Change to PEP 8 style.
+- Working Demo GIF
 
