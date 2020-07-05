@@ -27,7 +27,7 @@ import plotinblender as bl
 The plotinblender accepts both lists and numpy arrays as arguments
 ```python
 import numpy as np
-X = np.array(np.random.rand(500)*500)
+x = np.array(np.random.rand(500)*500)
 y = np.array(np.random.rand(500)*500)
 z = np.array(np.random.rand(500)*500)
 ```
@@ -37,7 +37,7 @@ To plot, use the following functions:
 # The Material args are optional to use.
 # The Material tuple is in the format (Red, Green, Blue, Alpha).
 
-bl.barPlot(X=X, y=y, gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1), barMaterial = (1,0,0,1))
+bl.barplot(x=x, y=y, grid_material = (1,1,1,1), number_material = (1,1,1,1), bar_material = (1,0,0,1))
 ```
 - ScatterPlot
 ```python
@@ -46,8 +46,8 @@ bl.barPlot(X=X, y=y, gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1), barMa
 # Two arguments gives 2D plots while Three gives 3D plots.
 # The cat is optional argument used for categorical plotting.
 
-bl.scatterPlot(X=X, y=y, cat=["Group 1","Group 2"], gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1))
-bl.scatterPlot(X=X, y=y, z=z, cat=["Group 1","Group 2"], gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1))
+bl.scatterplot(x=x, y=y, cat=["Group 1","Group 2"], grid_material = (1,1,1,1), number_material = (1,1,1,1))
+bl.scatterplot(x=x, y=y, z=z, cat=["Group 1","Group 2"], grid_material = (1,1,1,1), number_material = (1,1,1,1))
 ```
 - HistPlot
 ```python
@@ -55,7 +55,7 @@ bl.scatterPlot(X=X, y=y, z=z, cat=["Group 1","Group 2"], gridMaterial = (1,1,1,1
 # The Material tuple is in the format (Red, Green, Blue, Alpha).
 # The cat is optional argument used for categorical plotting.
 
-bl.histPlot(X=X, bins=35,cat=["Group 1","Group 2"], gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1))
+bl.histplot(x=x, bins=35,cat=["Group 1","Group 2"], grid_material = (1,1,1,1), number_material = (1,1,1,1))
 ```
 - SurfacePlot
 ```python
@@ -64,7 +64,7 @@ bl.histPlot(X=X, bins=35,cat=["Group 1","Group 2"], gridMaterial = (1,1,1,1), nu
 # The Material tuple is in the format (Red, Green, Blue, Alpha).
 
 arr = np.arange(20).reshape(4,5)
-bl.surfacePlot(z=arr, gridMaterial = (1,1,1,1), numberMaterial = (1,1,1,1), surfaceMaterial = (1,0,0,1))
+bl.surfaceplot(z=arr, grid_material = (1,1,1,1), number_material = (1,1,1,1), surface_material = (1,0,0,1))
 ```
 ### Contribute
 If you have a new idea for plotting or find out a bug or something, please feel free to raise an issue or pull request.

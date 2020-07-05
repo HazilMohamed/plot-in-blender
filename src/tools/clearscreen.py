@@ -1,6 +1,6 @@
 import bpy
 
-def clearScreen():
+def clearscreen():
     """
     Delete everything from 3D viewport of Blender. 
     """
