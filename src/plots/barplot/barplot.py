@@ -81,10 +81,18 @@ def barplot(x, y, grid_material, bar_material, number_material):
             TRANSFORM_OT_translate={"value":(0, 0, y[itr]/y_scale)})
         bpy.ops.object.mode_set( mode = 'OBJECT' )
         bpy.ops.object.origin_set(type='ORIGIN_CENTER_OF_MASS', center='MEDIAN')
+        bpy.ops.object.select_all(action = 'DESELECT')
         textobj(
             text=x[itr], text_type="X_plot", text_pos=(0, (x_scale-size_bar)/2+cursor, -1), 
             text_rot=(math.radians(90),math.radians(90),math.radians(90)),
-            text_scale=(min(1,x_scale), min(1,x_scale), min(1,x_scale)), number_material=number_material) 
+            text_scale=(min(1,x_scale), min(1,x_scale), min(1,x_scale)), number_material=number_material,
+            change_origin=False)
+        first_origin = bpy.context.object.matrix_world.to_translation()
+        bpy.ops.object.origin_set(type = 'ORIGIN_CENTER_OF_MASS', center='MEDIAN')
+        second_origin = bpy.context.object.matrix_world.to_translation()
+        bpy.ops.transform.translate(
+            value=(0, (first_origin.y - second_origin.y), 0), orient_type='GLOBAL', 
+            orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)))
         cursor += x_scale
 
     bpy.ops.object.select_all(action = 'DESELECT')
