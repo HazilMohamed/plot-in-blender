@@ -2,9 +2,15 @@ import subprocess
 import math
 import json
 import sys
+import os
 
-# Path to Blender file
-BLENDER_PATH = "/usr/share/blender/blender"		
+# Importing BLENDER_PATH from environemnt variables
+BLENDER_PATH = os.environ.get("BLENDER_PATH")
+if BLENDER_PATH is None:
+	raise OSError("Export BLENDER_PATH to env")
+
+if not os.path.isfile(BLENDER_PATH):
+	raise FileNotFoundError("Blender not found")
 
 def barplot(x=None, y=None, bar_material=(1,0,0,1), 
 			number_material=(1,1,1,1), grid_material=(1,1,1,1)):
@@ -79,7 +85,7 @@ def scatterplot(x=None, y=None, z=None, cat=None,
 	if len(set(cat)) > 8:
 		raise ValueError("cat can take up to 8 values")
 
-	#validation for 3D scatterplot
+	# Validation for 3D scatterplot
 	if z is not None:
 		if type(z) != list:
 			z = z.tolist()	
@@ -90,8 +96,8 @@ def scatterplot(x=None, y=None, z=None, cat=None,
 				if type(j) not in [int,float]:
 					raise TypeError("Only numbers can be plotted")
 				if j < 0:
-					#TODO:
-					#Supporting negative values too
+					# TODO:
+					# Supporting negative values too
 					raise ValueError("Negative values cannot be plotted")
 		data = {
 			"x":x,
@@ -111,7 +117,7 @@ def scatterplot(x=None, y=None, z=None, cat=None,
 		except OSError as e:
 			raise OSError(str(e))	
 	
-	#validation for 2D scatterplot
+	# Validation for 2D scatterplot
 	else:
 		if len(x) != len(y):
 			raise IndexError("Required same number of x and y values")
@@ -121,8 +127,8 @@ def scatterplot(x=None, y=None, z=None, cat=None,
 				if type(j) not in [int,float]:
 					raise TypeError("Only numbers can be plotted")
 				if j < 0:
-					#TODO:
-					#Supporting negative values too
+					# TODO:
+					# Supporting negative values too
 					raise ValueError("Negative values cannot be plotted")
 		
 		data = {
@@ -169,8 +175,8 @@ def histplot(x=None, bins=None, cat=None,
 		if type(i) not in [int,float]:
 			raise TypeError("Only numbers can be plotted")
 		if i < 0:
-			#TODO:
-			#Supporting negative values too
+			# TODO:
+			# Supporting negative values too
 			raise ValueError("Negative values cannot be plotted")
 		
 	if cat is not None:

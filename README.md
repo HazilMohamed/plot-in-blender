@@ -15,7 +15,9 @@ This is a python library to analyse data, so far the following plots can be visu
 
 ### Setup
 - Clone the repo to your directory.
-- Change the BLENDER_PATH to your blender executable.
+- Export BLENDER_PATH to environmnet variables by adding
+  <code>export BLENDER_PATH="blender_exec_directory"</code> to <code>.bashrc</code>
+
 
 ### Import
 Import the library to your project
