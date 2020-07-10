@@ -1,4 +1,10 @@
 ## plot-in-blender
+
+[![GitHub issues](https://img.shields.io/github/issues/hazilMohamed/plot-in-blender)](https://github.com/hazilMohamed/plot-in-blender/issues)
+[![GitHub forks](https://img.shields.io/github/forks/hazilMohamed/plot-in-blender)](https://github.com/hazilMohamed/plot-in-blender/network)
+[![GitHub stars](https://img.shields.io/github/stars/hazilMohamed/plot-in-blender)](https://github.com/hazilMohamed/plot-in-blender/stargazers)
+[![GitHub license](https://img.shields.io/github/license/hazilMohamed/plot-in-blender)](https://github.com/hazilMohamed/plot-in-blender/blob/master/LICENSE)
+
 ### What it is ?
 This is a python library to analyse data, so far the following plots can be visualized in Blender. 
 - BarPlot
@@ -80,4 +86,6 @@ If you have a new idea for plotting or find out a bug or something, please feel 
 - Test files.
 - Change to PEP 8 style.
 - Working Demo GIF
+
+[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
 
