@@ -14,7 +14,7 @@ This is a python library to analyse data, so far the following plots can be visu
 - Python 3.8x.
 
 ### Setup
-- Clone the repo to your directory.
+- Download latest release from <a href="https://github.com/HazilMohamed/plot-in-blender/releases">release</a> tab.
 - Export BLENDER_PATH to environmnet variables by adding
   <code>export BLENDER_PATH="blender_exec_directory"</code> to <code>.bashrc</code>
 
