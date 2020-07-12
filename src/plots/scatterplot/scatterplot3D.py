@@ -5,11 +5,11 @@ import json
 
 sys.path.append("src/tools/")
 
-from create2Dgrid import create2Dgrid
-from textobj import textobj
+from create_2D_grid import create_2D_grid
+from text_obj import text_obj
 from transform import transform
-from clearscreen import clearscreen
-from creatematerial import creatematerial
+from clear_screen import clear_screen
+from create_material import create_material
 
 def scatterplot3D(x, y, z, cat, grid_material, number_material):
     """
@@ -25,10 +25,10 @@ def scatterplot3D(x, y, z, cat, grid_material, number_material):
         grid_material    : The material color for grid in plot. Default color is White.
         number_material  : The material color for numbers in plot. Default color is White.
     Imported User Defined Functions :
-        clearscreen     : It will delete everything on the Blender Viewport .
-        textobj         : It will create a text object and convert into meshes.
+        clear_screen     : It will delete everything on the Blender Viewport .
+        text_obj         : It will create a text object and convert into meshes.
         transform       : This will be used as move function for objects.
-        creatematerial  : The materials were created and assigned if not exist.
+        create_material  : The materials were created and assigned if not exist.
     """
     
     # 8 colors are declared right now for to use, every material is diffuse material in Blender
@@ -39,7 +39,7 @@ def scatterplot3D(x, y, z, cat, grid_material, number_material):
     ]
     
     # Delete everything on the screen.
-    clearscreen()
+    clear_screen()
     
     # Variables used in the function.
     x_y_z_cat = []
@@ -54,30 +54,30 @@ def scatterplot3D(x, y, z, cat, grid_material, number_material):
     categories = list(set(cat))
 
     # Adding 3D grid by combining 3 2D grids.
-    create2Dgrid(
+    create_2D_grid(
         grid_name="Y_Z",grid_size=10,grid_pos=(0, 0, 0), 
         grid_rot=(math.radians(0), math.radians(-90), math.radians(0)), 
         x_sub=11, y_sub=11, grid_material=grid_material)
-    create2Dgrid(
+    create_2D_grid(
         grid_name="X_Y",grid_size=10,grid_pos=(0, 0, 0), 
         grid_rot=(math.radians(0), math.radians(0), math.radians(0)), 
         x_sub=11, y_sub=11, grid_material=grid_material)
-    create2Dgrid(
+    create_2D_grid(
         grid_name="Z_X",grid_size=10,grid_pos=(0, 0, 0), 
         grid_rot=(math.radians(90), math.radians(0), math.radians(0)), 
         x_sub=11, y_sub=11, grid_material=grid_material)
     
     # Numbering x-axis, y-axis and z-axis.
     for num in range(11):    
-        textobj(
+        text_obj(
             text=int(num*x_scale), text_type="X_plot", text_pos=(num, -1, 0),
             text_rot=(math.radians(0),math.radians(0) ,math.radians(90)),
             text_scale=(0.4,0.4,0.4), number_material=number_material)
-        textobj(
+        text_obj(
             text=int(num*y_scale), text_type="y_plot", text_pos=(0, num, -1), 
             text_rot=(math.radians(90),math.radians(0) ,math.radians(90)),
             text_scale=(0.4,0.4,0.4), number_material=number_material)
-        textobj(
+        text_obj(
             text=int(num*z_scale), text_type="z_plot", text_pos=(0, -1, num),
             text_rot=(math.radians(90),math.radians(0) ,math.radians(90)),
             text_scale=(0.4,0.4,0.4), number_material=number_material)
@@ -95,7 +95,7 @@ def scatterplot3D(x, y, z, cat, grid_material, number_material):
                 bpy.context.active_object.name = "Scatter No: (" + str(x[itr]) + ", " + str(y[itr]) + ", " + str(z[itr]) + "), Cat :" + str(categories[i]) 
                 
                 # The material will be created and applied.
-                creatematerial(
+                create_material(
                     material_name="ScatterMaterial :" + str(categories[i]),diffuse_color=scatter_material[i][1])
                 
                 mesh = bpy.context.object.data

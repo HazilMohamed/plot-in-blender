@@ -6,11 +6,11 @@ import json
 
 sys.path.append("src/tools/")
 
-from create2Dgrid import create2Dgrid
-from textobj import textobj
+from create_2D_grid import create_2D_grid
+from text_obj import text_obj
 from transform import transform
-from clearscreen import clearscreen
-from creatematerial import creatematerial
+from clear_screen import clear_screen
+from create_material import create_material
 
 def barplot(x, y, grid_material, bar_material, number_material):
     """
@@ -27,13 +27,13 @@ def barplot(x, y, grid_material, bar_material, number_material):
         number_material     : The material color for numbers in plot. Default color is White.
         bar_material        : The material color for bars in plot. Default color is Red.
     Imported User Defined Functions :
-        clearscreen     : It will delete everything on the Blender Viewport .
-        textobj         : It will create a text object and convert into meshes.
+        clear_screen     : It will delete everything on the Blender Viewport .
+        text_obj         : It will create a text object and convert into meshes.
         transform       : This will be used as move function for objects.
-        creatematerial  : The materials were created and assigned if not exist.
+        create_material  : The materials were created and assigned if not exist.
     """
     # Delete everything on the screen.
-    clearscreen()
+    clear_screen()
     
     # Variables used in the function.
     max_val = max(y)
@@ -44,14 +44,14 @@ def barplot(x, y, grid_material, bar_material, number_material):
     cursor = size_bar/2
 
     # 0.01 is added in the Location is to prevent face mix.
-    create2Dgrid(
+    create_2D_grid(
         grid_name="X_Y",grid_size=10,grid_pos=(-(size_bar/2)+0.01, 0, 0), 
         grid_rot=(math.radians(0), math.radians(-90), math.radians(0)), 
         x_sub=11, y_sub=2, grid_material=grid_material)
 
     # Y axis will be numbered.
     for num in range(11):    
-        textobj(
+        text_obj(
             text=num*y_scale, text_type="y_plot", text_pos=(-(size_bar/2), -1, num), 
             text_rot=(math.radians(90),math.radians(0) ,math.radians(90)), 
             number_material=number_material)
@@ -63,7 +63,7 @@ def barplot(x, y, grid_material, bar_material, number_material):
             size=size_bar, enter_editmode=False, location=(0, cursor, 0))
         bpy.context.active_object.name = "Bar "+str(x[itr])
         # The material will be created and applied.
-        creatematerial(
+        create_material(
             material_name="BarMaterial",
             diffuse_color=bar_material
         )
@@ -82,7 +82,7 @@ def barplot(x, y, grid_material, bar_material, number_material):
         bpy.ops.object.mode_set( mode = 'OBJECT' )
         bpy.ops.object.origin_set(type='ORIGIN_CENTER_OF_MASS', center='MEDIAN')
         bpy.ops.object.select_all(action = 'DESELECT')
-        textobj(
+        text_obj(
             text=x[itr], text_type="X_plot", text_pos=(0, (x_scale-size_bar)/2+cursor, -1), 
             text_rot=(math.radians(90),math.radians(90),math.radians(90)),
             text_scale=(min(1,x_scale), min(1,x_scale), min(1,x_scale)), number_material=number_material,

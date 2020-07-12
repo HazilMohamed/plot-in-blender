@@ -1,9 +1,9 @@
 import bpy
 import bmesh
 
-from creatematerial import creatematerial
+from create_material import create_material
 
-def textobj(
+def text_obj(
         text, text_type, text_pos, text_rot, 
         text_scale=(0.75,0.75,0.75), number_material=(1,1,1,1),
         change_origin=True):
@@ -32,5 +32,5 @@ def textobj(
     bpy.context.view_layer.objects.active = font_obj
     bpy.context.active_object.select_set(True)
     bpy.ops.object.convert(target="MESH")
-    creatematerial("NumberMaterial",number_material)
+    create_material("NumberMaterial",number_material)
     return

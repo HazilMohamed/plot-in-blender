@@ -1,6 +1,6 @@
 import bpy
 
-def creatematerial(material_name,diffuse_color):
+def create_material(material_name,diffuse_color):
     """
     The function creates a material if that material_name doesn't exist, 
     use the material to that object if it's already exists. 

@@ -6,6 +6,7 @@ import os
 
 # Importing BLENDER_PATH from environemnt variables
 BLENDER_PATH = os.environ.get("BLENDER_PATH")
+
 if BLENDER_PATH is None:
 	raise OSError("Export BLENDER_PATH to env")
 

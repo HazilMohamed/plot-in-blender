@@ -6,11 +6,11 @@ import json
 
 sys.path.append("src/tools/")
 
-from create2Dgrid import create2Dgrid
-from textobj import textobj
+from create_2D_grid import create_2D_grid
+from text_obj import text_obj
 from transform import transform
-from clearscreen import clearscreen
-from creatematerial import creatematerial
+from clear_screen import clear_screen
+from create_material import create_material
 
 def histplot(x, grid_material, number_material, bins=None, cat=None):
     """
@@ -26,10 +26,10 @@ def histplot(x, grid_material, number_material, bins=None, cat=None):
         bins            : The class interval for blocking the data values.
         cat             : The array of categorical values respected to each value in array x.  
     Imported User Defined Functions :
-        clearscreen     : It will delete everything on the Blender Viewport .
-        textobj         : It will create a text object and convert into meshes.
+        clear_screen     : It will delete everything on the Blender Viewport .
+        text_obj         : It will create a text object and convert into meshes.
         transform       : This will be used as move function for objects.
-        creatematerial  : The materials were created and assigned if not exist.
+        create_material  : The materials were created and assigned if not exist.
     """
 
     # 8 colors are declared right now for to use, every material is diffuse material in Blender
@@ -40,7 +40,7 @@ def histplot(x, grid_material, number_material, bins=None, cat=None):
     ]
 
     # Delete everything on the screen.
-    clearscreen()
+    clear_screen()
 
     # Variables used in the function.
     x_cat = []
@@ -82,14 +82,14 @@ def histplot(x, grid_material, number_material, bins=None, cat=None):
     x_scale = 10/len(x_new)
 
     # 0.01 is added in the Location is to prevent face mix.
-    create2Dgrid(
+    create_2D_grid(
         grid_name="x-Y", grid_size=10, grid_pos=(-(size_bar/2)+0.01, 0, 0),
         grid_rot=(math.radians(0), math.radians(-90), math.radians(0)),
         x_sub=11, y_sub=2, grid_material=grid_material)
 
     # Y axis will be numbered.
     for num in range(11):    
-        textobj(
+        text_obj(
             text=num*y_scale, text_type="y_plot", text_pos=(-(size_bar/2), -1, num),
             text_rot=(math.radians(90),math.radians(0) ,math.radians(90)),
             number_material=number_material)        
@@ -108,7 +108,7 @@ def histplot(x, grid_material, number_material, bins=None, cat=None):
             # The Bar name will be in the format of : "Bar No: 0, Cat: Male, Count: 6"
             bpy.context.active_object.name = "Bar No: " + str(x_new[itr]) + ", Cat: " + str(categories[i]) + ", Count: " + str(y_cat[i][itr])
             # The material will be created and applied.
-            creatematerial(
+            create_material(
                 material_name="BarMaterial "+ str(categories[i]), diffuse_color=bar_material[i][1])
         
             # Scaling bar plots in x axis.
@@ -127,14 +127,14 @@ def histplot(x, grid_material, number_material, bins=None, cat=None):
             bpy.ops.object.origin_set(type='ORIGIN_CENTER_OF_MASS', center='MEDIAN')
         
         y_cursor += x_scale
-        textobj(
+        text_obj(
             text=x_new[itr], text_type="X_plot", text_pos=(0, x_scale*itr, -1),
             text_rot=(math.radians(90),math.radians(0),math.radians(90)),
             text_scale=(min(1,x_scale/1.5), min(1,x_scale/1.5), min(1,x_scale/1.5)),
             number_material=number_material) 
 
     # To plot the last number of x axis
-    textobj(
+    text_obj(
         text=max(x_new)+bins, text_type="X_plot", text_pos=(0, 10, -1),
         text_rot=(math.radians(90),math.radians(0),math.radians(90)),
         text_scale=(min(1,x_scale/1.5), min(1,x_scale/1.5), min(1,x_scale/1.5)), 

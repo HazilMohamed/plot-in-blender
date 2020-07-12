@@ -6,11 +6,11 @@ import json
 
 sys.path.append("src/tools/")
 
-from create2Dgrid import create2Dgrid
-from textobj import textobj
+from create_2D_grid import create_2D_grid
+from text_obj import text_obj
 from transform import transform
-from clearscreen import clearscreen
-from creatematerial import creatematerial
+from clear_screen import clear_screen
+from create_material import create_material
 
 def surfaceplot(z, grid_material, surface_material, number_material):
     """
@@ -26,13 +26,13 @@ def surfaceplot(z, grid_material, surface_material, number_material):
         number_material      : The material color for numbers in plot. Default color is White.
         surface_material     : The material color for surface in plot. Default color is Red.
     Imported User Defined Functions :
-        clearscreen         : It will delete everything on the Blender Viewport .
-        textobj             : It will create a text object and convert into meshes.
+        clear_screen         : It will delete everything on the Blender Viewport .
+        text_obj             : It will create a text object and convert into meshes.
         transform           : This will be used as move function for objects.
-        creatematerial      : The materials were created and assigned if not exist.
+        create_material      : The materials were created and assigned if not exist.
     """
     # To delete default objects
-    clearscreen()    
+    clear_screen()    
     
     # Variables used in the function.
     # x and y are obtained from length of 2D array.
@@ -44,34 +44,34 @@ def surfaceplot(z, grid_material, surface_material, number_material):
     y_scale = math.ceil(y/10)
     
     # Adding 3 2D grids for 3D space.
-    create2Dgrid(
+    create_2D_grid(
         grid_name="Y_Z",grid_size=10,grid_pos=(0, 0, 0), 
         grid_rot=(math.radians(0), math.radians(-90), math.radians(0)), 
         x_sub=11, y_sub=11, grid_material=grid_material)
-    create2Dgrid(
+    create_2D_grid(
         grid_name="X_Y",grid_size=10,grid_pos=(0, 0, 0), 
         grid_rot=(math.radians(0), math.radians(0), math.radians(0)), 
         x_sub=11, y_sub=11, grid_material=grid_material)
-    create2Dgrid(
+    create_2D_grid(
         grid_name="Z_X",grid_size=10,grid_pos=(0, 0, 0), 
         grid_rot=(math.radians(90), math.radians(0), math.radians(0)), 
         x_sub=11, y_sub=11, grid_material=grid_material)
     
     # Numbering x-axis, y-axis and z-axis.
     for num in range(x//x_scale):    
-        textobj(
+        text_obj(
             text=int(num*x_scale), text_type="X_plot", 
             text_pos=((10/(x-1))*num*x_scale, -1, 0), 
             text_rot=(math.radians(0),math.radians(0) ,math.radians(90)),
             text_scale=(0.4,0.4,0.4), number_material=number_material)
     for num in range(y//y_scale): 
-        textobj(
+        text_obj(
             text=int(num*y_scale), text_type="y_plot", 
             text_pos=(0, (10/(y-1))*num*y_scale, -1), 
             text_rot=(math.radians(90),math.radians(0) ,math.radians(90)),
             text_scale=(0.4,0.4,0.4), number_material=number_material)
     for num in range(11):
-        textobj(
+        text_obj(
             text=int(num*z_scale), text_type="z_plot", 
             text_pos=(0, -1, num),
             text_rot=(math.radians(90),math.radians(0) ,math.radians(90)),
@@ -81,7 +81,7 @@ def surfaceplot(z, grid_material, surface_material, number_material):
     bpy.ops.mesh.primitive_grid_add(
         size=10, location=(5,5,0),x_subdivisions=x, y_subdivisions=y)
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
-    creatematerial(
+    create_material(
         material_name="SurfaceMaterial", diffuse_color=surface_material)
     bpy.context.active_object.name = "Surface"
     bpy.ops.object.mode_set(mode = 'EDIT') 

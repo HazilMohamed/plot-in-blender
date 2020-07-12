@@ -1,9 +1,9 @@
 import bpy
 import bmesh
 
-from creatematerial import creatematerial
+from create_material import create_material
 
-def create2Dgrid(
+def create_2D_grid(
         grid_name, grid_size, grid_pos, grid_rot, 
         x_sub, y_sub, grid_material=(1,1,1,1)):
     """
@@ -16,7 +16,7 @@ def create2Dgrid(
         y_sub           : The subdivisions in y axis.
         grid_material    : The material color of grid. Default value gives White diffuse material
     Imported User Defined Functions :
-        creatematerial  : The materials were created and assigned if not exist.
+        create_material  : The materials were created and assigned if not exist.
     """
 
     bpy.ops.mesh.primitive_grid_add(
@@ -56,5 +56,5 @@ def create2Dgrid(
     # Adding wireframe modifier to get grid structure.
     bpy.ops.object.modifier_add(type='WIREFRAME')
     bpy.context.object.modifiers["Wireframe"].thickness = 0.05
-    creatematerial("GridMaterial", grid_material)
+    create_material("GridMaterial", grid_material)
     return
