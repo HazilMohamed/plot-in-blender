@@ -252,5 +252,35 @@ def surfaceplot(z=None, surface_material=(1,0,0,1),
 		raise OSError(str(e))
 	return
 
+def pieplot(x=None,y=None):
+	if x is None or y is None:
+		raise TypeError("Must pass both x and y") 
 	
-
+	if type(x) != list:
+		x = x.tolist()
+	
+	if type(y) != list:
+		y = y.tolist()
+	
+	if len(x) != len(y):
+		raise IndexError("Required same number of x and y values")
+	
+	for i in x:
+		if i < 0:
+			raise ValueError("Negative values cannot be used in pieplots")
+	
+	data = {
+			"x":x,
+			"y":y
+		}
+	data = json.dumps(data)
+	
+	try:
+		res = subprocess.Popen(
+				[BLENDER_PATH,"-P", "src/plots/pieplot/pieplot.py", "--", data],
+				stdout=subprocess.PIPE) 
+		output = res.communicate()
+		print(output)
+	except OSError as e:
+		raise OSError(str(e))	
+	return

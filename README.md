@@ -5,7 +5,7 @@ This is a python library to analyse data, so far the following plots can be visu
 - ScatterPlot (2D and 3D)
 - HistPlot
 - SurfacePlot
-
+- PiePlot
 
 <p align="center"><img src="https://raw.githubusercontent.com/hazilMohamed/data-visualization-using-blender/master/res/screenshots/3D-Plots.jpg"></p>
 
@@ -67,6 +67,14 @@ bl.histplot(x=x, bins=35,cat=["Group 1","Group 2"], grid_material = (1,1,1,1), n
 
 arr = np.arange(20).reshape(4,5)
 bl.surfaceplot(z=arr, grid_material = (1,1,1,1), number_material = (1,1,1,1), surface_material = (1,0,0,1))
+```
+- PiePlot
+```python
+# The function requires x as numerical array and y as categorical array.
+
+x = [6,3,1,5,9]
+y = ["May","February","December","September","August"]
+bl.pieplot(x=x,y=y)
 ```
 ### Contribute
 If you have a new idea for plotting or find out a bug or something, please feel free to raise an issue or pull request.

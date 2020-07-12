@@ -21,11 +21,11 @@ def barplot(x, y, grid_material, bar_material, number_material):
     Each entity of the categoric variable is represented as a bar. 
     The size of the bar represents its numeric value. 
     Arguments :
-        x               : The array of values passed by user. It must be of number data type.
-        y               : The array of categoric values respected to x array.
-        grid_material    : The material color for grid in plot. Default color is White.
-        number_material  : The material color for numbers in plot. Default color is White.
-        bar_material     : The material color for bars in plot. Default color is Red.
+        x                   : The array of values passed by user. It must be of number data type.
+        y                   : The array of categoric values respected to x array.
+        grid_material       : The material color for grid in plot. Default color is White.
+        number_material     : The material color for numbers in plot. Default color is White.
+        bar_material        : The material color for bars in plot. Default color is Red.
     Imported User Defined Functions :
         clearscreen     : It will delete everything on the Blender Viewport .
         textobj         : It will create a text object and convert into meshes.
@@ -100,7 +100,7 @@ def barplot(x, y, grid_material, bar_material, number_material):
 
 
 if __name__ == "__main__":
-    #Json parsing
+    # Json parsing
     argv = sys.argv
     argv = argv[argv.index("--") + 1:]
     argv = json.loads(argv[0])
