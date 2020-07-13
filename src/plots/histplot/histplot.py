@@ -11,6 +11,7 @@ from text_obj import text_obj
 from transform import transform
 from clear_screen import clear_screen
 from create_material import create_material
+from change_viewport import change_viewport
 
 def histplot(x, grid_material, number_material, bins=None, cat=None):
     """
@@ -20,16 +21,17 @@ def histplot(x, grid_material, number_material, bins=None, cat=None):
     A histplot is a graphical representation that organizes
     a group of data points into user-specified ranges.
     Arguments :
-        x               : The array of values passed by user. It must be of number data type.
-        grid_material    : The material color for grid in plot. Default color is White.
-        number_material  : The material color for numbers in plot. Default color is White.
-        bins            : The class interval for blocking the data values.
-        cat             : The array of categorical values respected to each value in array x.  
+        x                   : The array of values passed by user. It must be of number data type.
+        grid_material       : The material color for grid in plot. Default color is White.
+        number_material     : The material color for numbers in plot. Default color is White.
+        bins                : The class interval for blocking the data values.
+        cat                 : The array of categorical values respected to each value in array x.  
     Imported User Defined Functions :
-        clear_screen     : It will delete everything on the Blender Viewport .
-        text_obj         : It will create a text object and convert into meshes.
-        transform       : This will be used as move function for objects.
-        create_material  : The materials were created and assigned if not exist.
+        clear_screen        : It will delete everything on the Blender Viewport .
+        text_obj            : It will create a text object and convert into meshes.
+        transform           : This will be used as move function for objects.
+        create_material     : The materials were created and assigned if not exist.
+        change_viewport     : Changes mode of viewport.
     """
 
     # 8 colors are declared right now for to use, every material is diffuse material in Blender
@@ -80,6 +82,9 @@ def histplot(x, grid_material, number_material, bins=None, cat=None):
         y_cat.append(y_new)
     y_scale = math.ceil(max_val/10)
     x_scale = 10/len(x_new)
+
+    # Switching to material mode.
+    change_viewport(shading="MATERIAL")
 
     # 0.01 is added in the Location is to prevent face mix.
     create_2D_grid(

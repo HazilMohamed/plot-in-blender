@@ -96,12 +96,12 @@ def pieplot(x, y):
     A pieplot (or a pie chart) is a circular statistical graphic, 
     which is divided into slices to illustrate numerical proportion.
     Arguments :
-        x   : The array of numerical values.
-        y   : The array of categorical values respected to x array.
+        x                   : The array of numerical values.
+        y                   : The array of categorical values respected to x array.
     Imported User Defined Functions and Classes :
-        PieMaterial     : The class used to create shader node for plotting.
-        clear_screen     : It will delete everything on the Blender Viewport.
-        change_viewport : Changes mode of viewport.
+        PieMaterial         : The class used to create shader node for plotting.
+        clear_screen        : It will delete everything on the Blender Viewport.
+        change_viewport     : Changes mode of viewport.
     """
 
     # Delete everything on the screen.

@@ -10,6 +10,7 @@ from text_obj import text_obj
 from transform import transform
 from clear_screen import clear_screen
 from create_material import create_material
+from change_viewport import change_viewport
 
 def scatterplot3D(x, y, z, cat, grid_material, number_material):
     """
@@ -18,17 +19,18 @@ def scatterplot3D(x, y, z, cat, grid_material, number_material):
     ==============
     A scatterplot in three dimenshion is used to display the relationship between three quantitative variables.
     Arguments :
-        x               : The array of quantitative values passed by user. It must be of number data type.
-        y               : The array of quantitative values passed by user. It must be of number data type.
-        z               : The array of quantitative values passed by user. It must be of number data type.
-        cat             : The array of categorical values respected to each value in (x, y, z).  
-        grid_material    : The material color for grid in plot. Default color is White.
-        number_material  : The material color for numbers in plot. Default color is White.
+        x                   : The array of quantitative values passed by user. It must be of number data type.
+        y                   : The array of quantitative values passed by user. It must be of number data type.
+        z                   : The array of quantitative values passed by user. It must be of number data type.
+        cat                 : The array of categorical values respected to each value in (x, y, z).  
+        grid_material       : The material color for grid in plot. Default color is White.
+        number_material     : The material color for numbers in plot. Default color is White.
     Imported User Defined Functions :
-        clear_screen     : It will delete everything on the Blender Viewport .
-        text_obj         : It will create a text object and convert into meshes.
-        transform       : This will be used as move function for objects.
-        create_material  : The materials were created and assigned if not exist.
+        clear_screen        : It will delete everything on the Blender Viewport .
+        text_obj            : It will create a text object and convert into meshes.
+        transform           : This will be used as move function for objects.
+        create_material     : The materials were created and assigned if not exist.
+        change_viewport     : Changes mode of viewport.
     """
     
     # 8 colors are declared right now for to use, every material is diffuse material in Blender
@@ -52,6 +54,9 @@ def scatterplot3D(x, y, z, cat, grid_material, number_material):
     z_scale = math.ceil(z_max_val/10)
     total = len(x)
     categories = list(set(cat))
+
+    # Switching to material mode.
+    change_viewport(shading="MATERIAL")
 
     # Adding 3D grid by combining 3 2D grids.
     create_2D_grid(

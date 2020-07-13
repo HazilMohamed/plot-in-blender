@@ -11,6 +11,7 @@ from text_obj import text_obj
 from transform import transform
 from clear_screen import clear_screen
 from create_material import create_material
+from change_viewport import change_viewport
 
 def surfaceplot(z, grid_material, surface_material, number_material):
     """
@@ -21,15 +22,16 @@ def surfaceplot(z, grid_material, surface_material, number_material):
     It shows a functional relationship between a designated dependent variable (z), 
     and two independent variables (x and y).
     Arguments :
-        z                   : The m*n array of values passed by user. It must be of number data type.
-        grid_material        : The material color for grid in plot. Default color is White.
-        number_material      : The material color for numbers in plot. Default color is White.
-        surface_material     : The material color for surface in plot. Default color is Red.
+        z                       : The m*n array of values passed by user. It must be of number data type.
+        grid_material           : The material color for grid in plot. Default color is White.
+        number_material         : The material color for numbers in plot. Default color is White.
+        surface_material        : The material color for surface in plot. Default color is Red.
     Imported User Defined Functions :
-        clear_screen         : It will delete everything on the Blender Viewport .
-        text_obj             : It will create a text object and convert into meshes.
-        transform           : This will be used as move function for objects.
-        create_material      : The materials were created and assigned if not exist.
+        clear_screen            : It will delete everything on the Blender Viewport .
+        text_obj                : It will create a text object and convert into meshes.
+        transform               : This will be used as move function for objects.
+        create_material         : The materials were created and assigned if not exist.
+        change_viewport         : Changes mode of viewport.
     """
     # To delete default objects
     clear_screen()    
@@ -42,6 +44,9 @@ def surfaceplot(z, grid_material, surface_material, number_material):
     z_scale = math.ceil(z_max_val/10)
     x_scale = math.ceil(x/10)
     y_scale = math.ceil(y/10)
+
+    # Switching to material mode.
+    change_viewport(shading="MATERIAL")
     
     # Adding 3 2D grids for 3D space.
     create_2D_grid(
