@@ -4,8 +4,11 @@ import sys
 import json
 
 sys.path.append("src/classes/common_tools")
+sys.path.append("src/classes/materials")
 
 from common_tools import CommonTools
+from principle_material import PrincipleMaterial
+
 
 class ScatterPlot3D(CommonTools):
     """
@@ -15,6 +18,8 @@ class ScatterPlot3D(CommonTools):
     A scatterplot in two dimenshion is used to display the relationship between two quantitative variables.
     Inheritted Class:
         CommonTools         : It consists of basic operations needed for plotting.
+    Imported Class:
+        PrincipleMaterial   : Used to create principle material.
     Arguments :
         x                   : The array of quantitative values passed by user. It must be of number data type.
         y                   : The array of quantitative values passed by user. It must be of number data type.
@@ -100,8 +105,9 @@ class ScatterPlot3D(CommonTools):
                     bpy.context.active_object.name = "Scatter No: (" + str(self.x[itr]) + ", " + str(self.y[itr]) + ", " + str(self.z[itr]) + "), Cat :" + str(categories[i]) 
                     
                     # The material will be created and applied.
-                    self.create_material(
-                        material_name="ScatterMaterial :" + str(categories[i]),diffuse_color=self.scatter_material[i][1])
+                    activeObject = bpy.context.active_object
+                    material = PrincipleMaterial("ScatterMaterial :" + str(categories[i]), self.scatter_material[i][1]) 
+                    activeObject.data.materials.append(material.create_principle_bsdf())
                     
                     mesh = bpy.context.object.data
                     for f in mesh.polygons:

@@ -1,5 +1,10 @@
 import bpy
 import bmesh
+import sys
+
+sys.path.append("src/classes/materials")
+
+from principle_material import PrincipleMaterial
 
 class CommonTools():
     def clear_screen(self):
@@ -77,25 +82,12 @@ class CommonTools():
         # Adding wireframe modifier to get grid structure.
         bpy.ops.object.modifier_add(type='WIREFRAME')
         bpy.context.object.modifiers["Wireframe"].thickness = 0.05
-        self.create_material("GridMaterial", grid_material)
+        text_material = PrincipleMaterial("GridMaterial",grid_material)
+        activeObject = bpy.context.active_object
+        activeObject.data.materials.append(text_material.create_principle_bsdf())
         return
 
-    def create_material(self, material_name,diffuse_color):
-        """
-        The function creates a material if that material_name doesn't exist, 
-        use the material to that object if it's already exists. 
-        Arguments:
-            material_name    : The name of material to be used.
-            diffuse_color    : The (R,G,B,A) value to be given for diffuse material.
-        """
-        
-        mat = bpy.data.materials.get(material_name)
-        if mat is None:
-            mat = bpy.data.materials.new(material_name)
-        activeObject = bpy.context.active_object 
-        activeObject.data.materials.append(mat)
-        bpy.context.object.active_material.diffuse_color = diffuse_color
-        return
+
 
     def text_obj(
             self, text, text_type, text_pos, text_rot, 
@@ -126,7 +118,9 @@ class CommonTools():
         bpy.context.view_layer.objects.active = font_obj
         bpy.context.active_object.select_set(True)
         bpy.ops.object.convert(target="MESH")
-        self.create_material("NumberMaterial",number_material)
+        text_material = PrincipleMaterial("NumberMaterial",number_material)
+        activeObject = bpy.context.active_object
+        activeObject.data.materials.append(text_material.create_principle_bsdf())
         return
     
     def transform(

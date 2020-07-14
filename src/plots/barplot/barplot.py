@@ -5,8 +5,10 @@ import sys
 import json
 
 sys.path.append("src/classes/common_tools")
+sys.path.append("src/classes/materials")
 
 from common_tools import CommonTools
+from principle_material import PrincipleMaterial
 
 class BarPlot(CommonTools):
     """
@@ -18,6 +20,8 @@ class BarPlot(CommonTools):
     The size of the bar represents its numeric value.
     Inheritted Class:
         CommonTools         : It consists of basic operations needed for plotting. 
+    Imported Class:
+        PrincipleMaterial   : Used to create principle material.
     Arguments :
         x                   : The array of values passed by user. It must be of number data type.
         y                   : The array of categoric values respected to x array.
@@ -71,10 +75,9 @@ class BarPlot(CommonTools):
                 size=size_bar, enter_editmode=False, location=(0, cursor, 0))
             bpy.context.active_object.name = "Bar "+str(self.x[itr])
             # The material will be created and applied.
-            self.create_material(
-                material_name="BarMaterial",
-                diffuse_color=self.bar_material
-            )
+            activeObject = bpy.context.active_object
+            material = PrincipleMaterial("BarMaterial", self.bar_material) 
+            activeObject.data.materials.append(material.create_principle_bsdf())
 
             # Scaling bar plots in x axis.
             self.transform(

@@ -5,8 +5,10 @@ import math
 import json
 
 sys.path.append("src/classes/common_tools")
+sys.path.append("src/classes/materials")
 
 from common_tools import CommonTools
+from principle_material import PrincipleMaterial
 
 # from create_2D_grid import create_2D_grid
 # from text_obj import text_obj
@@ -24,6 +26,8 @@ class SurfacePlot(CommonTools):
     and two independent variables (x and y).
     Inheritted Class:
         CommonTools             : It consists of basic operations needed for plotting.
+    Imported Class:
+        PrincipleMaterial   : Used to create principle material.
     Arguments :
         z                       : The m*n array of values passed by user. It must be of number data type.
         grid_material           : The material color for grid in plot. Default color is White.
@@ -94,8 +98,9 @@ class SurfacePlot(CommonTools):
         bpy.ops.mesh.primitive_grid_add(
             size=10, location=(5,5,0),x_subdivisions=x, y_subdivisions=y)
         bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
-        self.create_material(
-            material_name="SurfaceMaterial", diffuse_color=self.surface_material)
+        activeObject = bpy.context.active_object
+        material = PrincipleMaterial("SurfaceMaterial", self.surface_material) 
+        activeObject.data.materials.append(material.create_principle_bsdf())
         bpy.context.active_object.name = "Surface"
         bpy.ops.object.mode_set(mode = 'EDIT') 
         bpy.ops.mesh.select_all(action = 'DESELECT')

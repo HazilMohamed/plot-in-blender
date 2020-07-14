@@ -5,8 +5,10 @@ import sys
 import json
 
 sys.path.append("src/classes/common_tools")
+sys.path.append("src/classes/materials")
 
 from common_tools import CommonTools
+from principle_material import PrincipleMaterial
 
 class HistPlot(CommonTools):
     """
@@ -17,6 +19,8 @@ class HistPlot(CommonTools):
     a group of data points into user-specified ranges.
     Inheritted Class:
         CommonTools         : It consists of basic operations needed for plotting.
+    Imported Class:
+        PrincipleMaterial   : Used to create principle material.
     Arguments :
         x                   : The array of values passed by user. It must be of number data type.
         grid_material       : The material color for grid in plot. Default color is White.
@@ -109,8 +113,9 @@ class HistPlot(CommonTools):
                 # The Bar name will be in the format of : "Bar No: 0, Cat: Male, Count: 6"
                 bpy.context.active_object.name = "Bar No: " + str(x_new[itr]) + ", Cat: " + str(categories[i]) + ", Count: " + str(y_cat[i][itr])
                 # The material will be created and applied.
-                self.create_material(
-                    material_name="BarMaterial "+ str(categories[i]), diffuse_color=self.bar_material[i][1])
+                activeObject = bpy.context.active_object
+                material = PrincipleMaterial("BarMaterial "+ str(categories[i]), self.bar_material[i][1]) 
+                activeObject.data.materials.append(material.create_principle_bsdf())
             
                 # Scaling bar plots in x axis.
                 self.transform(

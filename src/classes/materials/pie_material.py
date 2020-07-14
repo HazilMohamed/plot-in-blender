@@ -3,9 +3,9 @@ import random
 
 class PieMaterial():
     """
-    ===========
-    PIEMATERIAL
-    ===========
+    ============
+    PIE MATERIAL
+    ============
     The class is used to create gradient used in pieplots.
     Arguments:
         percent_of_x                : The percentage values of x array.
