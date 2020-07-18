@@ -42,7 +42,7 @@ class PiePlot(CommonTools):
             percent_of_x.append(i*100/sum(self.x))
 
         # Instanciating class "PieMaterial".
-        material = PieMaterial(percent_of_x)
+        material = PieMaterial(percent_of_x, self.y)
         
         # Creating a cylinder for pie plot.
         bpy.ops.mesh.primitive_cylinder_add(

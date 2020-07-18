@@ -1,6 +1,8 @@
 import bpy
 import random
 
+from principle_material import PrincipleMaterial
+
 class PieMaterial():
     """
     ============
@@ -15,18 +17,25 @@ class PieMaterial():
         create_pie_material         : Used to create shader of pieplot.
         create_gradient             : This sections adds or removes elements if you update your procents_and_colors list with more / fewer elements
     """
-    def __init__(self, percent_of_x):
+    def __init__(self, percent_of_x, y):
         self.values_and_colors = []
-        self.percent_of_x = percent_of_x 
-    
+        self.percent_of_x = percent_of_x
+        self.y = y
+
     def create_values_and_colors(self):
-        for i in self.percent_of_x:
-            self.values_and_colors.append([i,self.get_random_color()])
+        for i in range(len(self.percent_of_x)):
+            self.values_and_colors.append([
+                self.percent_of_x[i], 
+                self.get_random_color(self.percent_of_x[i] ,self.y[i])])
         return self.values_and_colors
 
-    def get_random_color(self):
+    def get_random_color(self, percent, cat):
         RAN = random.random
-        return ((RAN(), RAN(), RAN(), 1.0))
+        r, g, b = RAN(), RAN(), RAN()
+        material = PrincipleMaterial(
+            str(cat) +" - "+ str(round(percent,2)),(r, g, b, 1.0))
+        material.create_principle_bsdf()
+        return ((r, g, b, 1.0))
 
     def create_gradient(self, elements, procents_and_colors):
         diff = len(elements) - len(procents_and_colors)
