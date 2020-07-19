@@ -9,6 +9,8 @@ class PieMaterial():
     PIE MATERIAL
     ============
     The class is used to create gradient used in pieplots.
+    Imported Class:
+        PrincipleMaterial           : Used to create Principle BSDF.
     Arguments:
         percent_of_x                : The percentage values of x array.
     Methods:

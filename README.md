@@ -66,7 +66,7 @@ bl.histplot(x=x, bins=35,cat=["Group 1","Group 2"], grid_material = (1,1,1,1), n
 # The Material tuple is in the format (Red, Green, Blue, Alpha).
 
 arr = np.arange(20).reshape(4,5)
-bl.surfaceplot(z=arr, grid_material = (1,1,1,1), number_material = (1,1,1,1), surface_material = (1,0,0,1))
+bl.surfaceplot(z=arr, grid_material = (1,1,1,1), number_material = (1,1,1,1))
 ```
 - PiePlot
 ```python

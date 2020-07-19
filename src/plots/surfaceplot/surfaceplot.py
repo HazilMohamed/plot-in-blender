@@ -9,13 +9,8 @@ sys.path.append("src/classes/materials")
 
 from common_tools import CommonTools
 from principle_material import PrincipleMaterial
+from surface_gradient_material import SurfaceGradientMaterial
 
-# from create_2D_grid import create_2D_grid
-# from text_obj import text_obj
-# from transform import transform
-# from clear_screen import clear_screen
-# from create_material import create_material
-# from change_viewport import change_viewport
 class SurfacePlot(CommonTools):
     """
     ===========
@@ -32,16 +27,13 @@ class SurfacePlot(CommonTools):
         z                       : The m*n array of values passed by user. It must be of number data type.
         grid_material           : The material color for grid in plot. Default color is White.
         number_material         : The material color for numbers in plot. Default color is White.
-        surface_material        : The material color for surface in plot. Default color is Red.
     Methods:
         surfaceplot             : The main function to plot.
     """
     def __init__(
-            self, z, grid_material, 
-            surface_material, number_material):
+            self, z, grid_material, number_material):
         self.z = z
         self.grid_material = grid_material
-        self.surface_material = surface_material
         self.number_material = number_material
 
     def surfaceplot(self):
@@ -99,8 +91,8 @@ class SurfacePlot(CommonTools):
             size=10, location=(5,5,0),x_subdivisions=x, y_subdivisions=y)
         bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
         activeObject = bpy.context.active_object
-        material = PrincipleMaterial("SurfaceMaterial", self.surface_material) 
-        activeObject.data.materials.append(material.create_principle_bsdf())
+        material = SurfaceGradientMaterial() 
+        activeObject.data.materials.append(material.create_surface_material())
         bpy.context.active_object.name = "Surface"
         bpy.ops.object.mode_set(mode = 'EDIT') 
         bpy.ops.mesh.select_all(action = 'DESELECT')
@@ -135,6 +127,5 @@ if __name__ == "__main__":
 
     plot = SurfacePlot(
                 z=argv["z"],
-                grid_material=argv["grid_material"], surface_material=argv["surface_material"], 
-                number_material=argv["number_material"])
+                grid_material=argv["grid_material"], number_material=argv["number_material"])
     plot.surfaceplot()

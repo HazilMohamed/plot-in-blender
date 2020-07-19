@@ -210,8 +210,8 @@ def histplot(x=None, bins=None, cat=None,
 		raise OSError(str(e))
 	return
 
-def surfaceplot(z=None, surface_material=(1,0,0,1), 
-				number_material=(1,1,1,1), grid_material=(1,1,1,1)):
+def surfaceplot(z=None, number_material=(1,1,1,1), 
+		grid_material=(1,1,1,1)):
 	if z is None:
 		raise ValueError("Must pass z")
 	
@@ -219,7 +219,7 @@ def surfaceplot(z=None, surface_material=(1,0,0,1),
 	if type(z) != list:
 		z = z.tolist()
 	
-	for i in [surface_material, number_material, grid_material]:
+	for i in [number_material, grid_material]:
 		if len(i) != 4:
 			raise IOError("The material arguments value tuple in the format (R,G,B,A)")
 		for j in i:
@@ -237,7 +237,6 @@ def surfaceplot(z=None, surface_material=(1,0,0,1),
 	
 	data = {
 			"z":z,
-			"surface_material":surface_material,
 			"grid_material":grid_material,
 			"number_material":number_material
 		}
