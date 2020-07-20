@@ -27,14 +27,16 @@ class SurfacePlot(CommonTools):
         z                       : The m*n array of values passed by user. It must be of number data type.
         grid_material           : The material color for grid in plot. Default color is White.
         number_material         : The material color for numbers in plot. Default color is White.
+        gradient                : The gradient shader of surface.
     Methods:
         surfaceplot             : The main function to plot.
     """
     def __init__(
-            self, z, grid_material, number_material):
+            self, z, grid_material, number_material, gradient):
         self.z = z
         self.grid_material = grid_material
         self.number_material = number_material
+        self.gradient = gradient
 
     def surfaceplot(self):
         # To delete default objects
@@ -91,7 +93,7 @@ class SurfacePlot(CommonTools):
             size=10, location=(5,5,0),x_subdivisions=x, y_subdivisions=y)
         bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
         activeObject = bpy.context.active_object
-        material = SurfaceGradientMaterial() 
+        material = SurfaceGradientMaterial(self.gradient) 
         activeObject.data.materials.append(material.create_surface_material())
         bpy.context.active_object.name = "Surface"
         bpy.ops.object.mode_set(mode = 'EDIT') 
@@ -126,6 +128,6 @@ if __name__ == "__main__":
     argv = json.loads(argv[0])
 
     plot = SurfacePlot(
-                z=argv["z"],
-                grid_material=argv["grid_material"], number_material=argv["number_material"])
+                z=argv["z"], grid_material=argv["grid_material"],
+                number_material=argv["number_material"], gradient=argv["gradient"],)
     plot.surfaceplot()

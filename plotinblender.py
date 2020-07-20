@@ -211,7 +211,10 @@ def histplot(x=None, bins=None, cat=None,
 	return
 
 def surfaceplot(z=None, number_material=(1,1,1,1), 
-		grid_material=(1,1,1,1)):
+		grid_material=(1,1,1,1), gradient="ocean"):
+	
+	gradients = ["flames", "ocean", "sunset", "forest"]
+
 	if z is None:
 		raise ValueError("Must pass z")
 	
@@ -226,6 +229,9 @@ def surfaceplot(z=None, number_material=(1,1,1,1),
 			if type(j) not in [int, float] or j < 0:
 				raise ValueError("Only positive numbers can be used in material")
 	
+	if gradient not in gradients:
+		raise IOError("The gradient not available")
+
 	for l in z:
 		if len(l) != length:
 			raise ValueError("Same number of elements required in each row")
@@ -238,7 +244,8 @@ def surfaceplot(z=None, number_material=(1,1,1,1),
 	data = {
 			"z":z,
 			"grid_material":grid_material,
-			"number_material":number_material
+			"number_material":number_material,
+			"gradient":gradient
 		}
 	data = json.dumps(data)
 	
