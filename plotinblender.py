@@ -291,3 +291,36 @@ def pieplot(x=None,y=None):
 	except OSError as e:
 		raise OSError(str(e))	
 	return
+
+def countplot(x=None, number_material=(1,1,1,1),
+			  grid_material=(1,1,1,1)):
+	
+	if x is None:
+		raise ValueError("Must pass x")
+
+	if type(x) != list:
+		x = x.tolist()
+		
+	for i in [number_material, grid_material]:
+		if len(i) != 4:
+			raise IOError("The material arguments value tuple in the format (R,G,B,A)")
+		for j in i:
+			if type(j) not in [int, float] or j < 0:
+				raise ValueError("Only positive numbers can be used in material")
+	
+	data = {
+			"x":x,
+			"grid_material":grid_material,
+			"number_material":number_material
+		}
+	data = json.dumps(data)
+	
+	try:
+		res = subprocess.Popen(
+				[BLENDER_PATH,"-P", "src/plots/countplot/countplot.py", "--", data],
+				stdout=subprocess.PIPE) 
+		output = res.communicate()
+		print(output)
+	except OSError as e:
+		raise OSError(str(e))
+	return

@@ -6,6 +6,7 @@ This is a python library to analyse data, so far the following plots can be visu
 - HistPlot
 - SurfacePlot
 - PiePlot
+- CountPlot
 
 <p align="center"><img src="https://raw.githubusercontent.com/hazilMohamed/data-visualization-using-blender/master/res/screenshots/3D-Plots.jpg"></p>
 
@@ -77,6 +78,12 @@ bl.surfaceplot(z=arr, grid_material = (1,1,1,1), number_material = (1,1,1,1), gr
 x = [6,3,1,5,9]
 y = ["May","February","December","September","August"]
 bl.pieplot(x=x,y=y)
+```
+- CountPlot
+```python
+# The function will plot the count of categorical values
+x = ["male","female","male","male","female","male","female","female"]
+bl.count(x=x, grid_material = (1,1,1,1), number_material = (1,1,1,1))
 ```
 ### Contribute
 If you have a new idea for plotting or find out a bug or something, please feel free to raise an issue or pull request.
