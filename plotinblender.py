@@ -292,7 +292,7 @@ def pieplot(x=None,y=None):
 		raise OSError(str(e))	
 	return
 
-def countplot(x=None, number_material=(1,1,1,1),
+def countplot(x=None, cat=None, number_material=(1,1,1,1),
 			  grid_material=(1,1,1,1)):
 	
 	if x is None:
@@ -300,7 +300,16 @@ def countplot(x=None, number_material=(1,1,1,1),
 
 	if type(x) != list:
 		x = x.tolist()
-		
+	
+	if cat is not None:
+		if type(cat) != list:
+			cat = cat.tolist()
+		if len(x) != len(cat):
+			raise IndexError("Required same number of x and cat values")
+	
+	if cat is None:
+		cat = [1]*len(x)
+
 	for i in [number_material, grid_material]:
 		if len(i) != 4:
 			raise IOError("The material arguments value tuple in the format (R,G,B,A)")
@@ -310,6 +319,7 @@ def countplot(x=None, number_material=(1,1,1,1),
 	
 	data = {
 			"x":x,
+			"cat":cat,
 			"grid_material":grid_material,
 			"number_material":number_material
 		}

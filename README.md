@@ -81,9 +81,10 @@ bl.pieplot(x=x,y=y)
 ```
 - CountPlot
 ```python
-# The function will plot the count of categorical values
+# The function will plot the count of categorical values.
+# The cat is optional argument used for categorical plotting.
 x = ["male","female","male","male","female","male","female","female"]
-bl.count(x=x, grid_material = (1,1,1,1), number_material = (1,1,1,1))
+bl.count(x=x, cat=cat, grid_material = (1,1,1,1), number_material = (1,1,1,1))
 ```
 ### Contribute
 If you have a new idea for plotting or find out a bug or something, please feel free to raise an issue or pull request.

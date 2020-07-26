@@ -13,18 +13,10 @@ class PrincipleMaterial():
         diffuse_color           : The (R,G,B,A) value to be given for diffuse material.
     Methods:
         create_principle_bsdf   : The main function create material.
-        generate_random_color   : A random color is generated if not color is given.
     """ 
-    def __init__(self, material_name, material_color=None):
+    def __init__(self, material_name, material_color):
         self.material_name = material_name
-        if material_color is None:
-            self.material_color = self.generate_random_color()
-        else:
-            self.material_color = material_color
-
-    def generate_random_color(self):
-        RAN = random.random
-        return ((RAN(), RAN(), RAN(), 1))
+        self.material_color = material_color
     
     def create_principle_bsdf(self):
         material = bpy.data.materials.get(self.material_name)
