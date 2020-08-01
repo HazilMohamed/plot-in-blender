@@ -15,7 +15,7 @@ class ScatterPlot3D(CommonTools):
     ==============
     SCATTERPLOT 3D
     ==============
-    A scatterplot in two dimenshion is used to display the relationship between two quantitative variables.
+    A scatterplot in three dimension is used to display the relationship between three quantitative variables.
     Inheritted Class:
         CommonTools         : It consists of basic operations needed for plotting.
     Imported Class:

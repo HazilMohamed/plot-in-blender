@@ -27,6 +27,7 @@ class CountPlot(CommonTools):
         x                   : The array of values passed by user. It must be of number data type.
         grid_material       : The material color for grid in plot. Default color is White.
         number_material     : The material color for numbers in plot. Default color is White.
+    	cat		     : The array of categorical values respected to each value in array x. 
     Methods:
         countplot           : The main function to plot.
         generate_color     : Generate random colors for each categories.

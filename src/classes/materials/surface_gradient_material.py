@@ -68,7 +68,6 @@ class SurfaceGradientMaterial():
         elements = nodes["ColorRamp"].color_ramp.elements
         nodes["ColorRamp"].color_ramp.interpolation = "EASE"
         
-        print(self.variants_and_gradients.get(self.gradient_name))
         self.create_gradient(elements, self.variants_and_gradients.get(self.gradient_name))
             
         principled_bsdf = nodes.get("Principled BSDF")

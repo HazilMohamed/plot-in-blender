@@ -14,7 +14,7 @@ class ScatterPlot2D(CommonTools):
     ==============
     SCATTERPLOT 2D
     ==============
-    A scatterplot in two dimenshion is used to display the relationship between two quantitative variables.
+    A scatterplot in two dimension is used to display the relationship between two quantitative variables.
     Inheritted Class:
         CommonTools         : It consists of basic operations needed for plotting.
     Imported Class:
