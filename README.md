@@ -1,7 +1,7 @@
 ## plot-in-blender
 plot-in-blender is a python library to analyse data, so far the following plots can be visualized in Blender
 
-<p align="center"><img src="https://raw.githubusercontent.com/hazilMohamed/data-visualization-using-blender/master/res/readme/3D-Plots.jpg"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/hazilMohamed/data-visualization-using-blender/master/res/readme/plots.jpg"></p>
 
 ### Features
 - Three dimensional plotting using Blender.
@@ -24,7 +24,10 @@ import plotinblender as bl
 ```
 
 ### Usage
-Dive in to <a href="https://github.com/HazilMohamed/plot-in-blender/wiki">wiki</a> to know more about plot-in-blender.
+Here is a quick way to use this.
+<p align="center"><img src="https://raw.githubusercontent.com/hazilMohamed/data-visualization-using-blender/master/res/readme/plotting_example.gif"></p>
+
+For more, dive in to <a href="https://github.com/HazilMohamed/plot-in-blender/wiki">wiki</a> to know more about plot-in-blender.
 
 ### Contribute
 If you have a new idea for plotting or find out a bug or something, please feel free to raise an issue or pull request.
