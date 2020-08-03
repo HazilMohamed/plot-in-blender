@@ -1,3 +1,5 @@
+from principle_material import PrincipleMaterial
+from common_tools import CommonTools
 import bpy
 import bmesh
 import math
@@ -7,8 +9,6 @@ import json
 sys.path.append("src/classes/common_tools")
 sys.path.append("src/classes/materials")
 
-from common_tools import CommonTools
-from principle_material import PrincipleMaterial
 
 class BarPlot(CommonTools):
     """
@@ -31,8 +31,9 @@ class BarPlot(CommonTools):
     Methods:
         barplot             : The main function to plot.
     """
+
     def __init__(
-            self, x, y, grid_material, 
+            self, x, y, grid_material,
             bar_material, number_material):
         self.x = x
         self.y = y
@@ -43,7 +44,7 @@ class BarPlot(CommonTools):
     def barplot(self):
         # Delete everything on the screen.
         self.clear_screen()
-        
+
         # Variables used in the function.
         max_val = max(self.y)
         total = len(self.x)
@@ -57,15 +58,15 @@ class BarPlot(CommonTools):
 
         # 0.01 is added in the Location is to prevent face mix.
         self.create_2D_grid(
-            grid_name="X_Y",grid_size=10,grid_pos=(-(size_bar/2)+0.01, 0, 0), 
-            grid_rot=(math.radians(0), math.radians(-90), math.radians(0)), 
+            grid_name="X_Y", grid_size=10, grid_pos=(-(size_bar/2)+0.01, 0, 0),
+            grid_rot=(math.radians(0), math.radians(-90), math.radians(0)),
             x_sub=11, y_sub=2, grid_material=self.grid_material)
 
         # Y axis will be numbered.
-        for num in range(11):    
+        for num in range(11):
             self.text_obj(
-                text=num*y_scale, text_type="y_plot", text_pos=(-(size_bar/2), -1, num), 
-                text_rot=(math.radians(90),math.radians(0) ,math.radians(90)), 
+                text=num*y_scale, text_type="y_plot", text_pos=(-(size_bar/2), -1, num),
+                text_rot=(math.radians(90), math.radians(0), math.radians(90)),
                 number_material=self.number_material)
 
         # x axis will be numbered and graph will be plotted.
@@ -76,37 +77,41 @@ class BarPlot(CommonTools):
             bpy.context.active_object.name = "Bar "+str(self.x[itr])
             # The material will be created and applied.
             activeObject = bpy.context.active_object
-            material = PrincipleMaterial("BarMaterial", self.bar_material) 
-            activeObject.data.materials.append(material.create_principle_bsdf())
+            material = PrincipleMaterial("BarMaterial", self.bar_material)
+            activeObject.data.materials.append(
+                material.create_principle_bsdf())
 
             # Scaling bar plots in x axis.
             self.transform(
-                mode='EDIT',type='EDGE',size_bar=size_bar, 
-                x_scale=x_scale, indices=[2,3]) #[2,3] reps rhs of plane from user perspective
-            
+                mode='EDIT', type='EDGE', size_bar=size_bar,
+                x_scale=x_scale, indices=[2, 3])  # [2,3] reps rhs of plane from user perspective
+
             # Extruding plane in Z-axis to make into bar.
-            bpy.ops.object.mode_set(mode = 'EDIT')
-            bpy.ops.mesh.select_mode(type = 'FACE')
-            bpy.ops.mesh.select_all(action = 'SELECT')
+            bpy.ops.object.mode_set(mode='EDIT')
+            bpy.ops.mesh.select_mode(type='FACE')
+            bpy.ops.mesh.select_all(action='SELECT')
             bpy.ops.mesh.extrude_region_move(
-                TRANSFORM_OT_translate={"value":(0, 0, self.y[itr]/y_scale)})
-            bpy.ops.object.mode_set( mode = 'OBJECT' )
-            bpy.ops.object.origin_set(type='ORIGIN_CENTER_OF_MASS', center='MEDIAN')
-            bpy.ops.object.select_all(action = 'DESELECT')
+                TRANSFORM_OT_translate={"value": (0, 0, self.y[itr]/y_scale)})
+            bpy.ops.object.mode_set(mode='OBJECT')
+            bpy.ops.object.origin_set(
+                type='ORIGIN_CENTER_OF_MASS', center='MEDIAN')
+            bpy.ops.object.select_all(action='DESELECT')
             self.text_obj(
-                text=self.x[itr], text_type="X_plot", text_pos=(0, (x_scale-size_bar)/2+cursor, -1), 
-                text_rot=(math.radians(90),math.radians(90),math.radians(90)),
-                text_scale=(min(1,x_scale), min(1,x_scale), min(1,x_scale)),
+                text=self.x[itr], text_type="X_plot", text_pos=(0, (x_scale-size_bar)/2+cursor, -1),
+                text_rot=(math.radians(90), math.radians(
+                    90), math.radians(90)),
+                text_scale=(min(1, x_scale), min(1, x_scale), min(1, x_scale)),
                 number_material=self.number_material, change_origin=False)
             first_origin = bpy.context.object.matrix_world.to_translation()
-            bpy.ops.object.origin_set(type = 'ORIGIN_CENTER_OF_MASS', center='MEDIAN')
+            bpy.ops.object.origin_set(
+                type='ORIGIN_CENTER_OF_MASS', center='MEDIAN')
             second_origin = bpy.context.object.matrix_world.to_translation()
             bpy.ops.transform.translate(
-                value=(0, (first_origin.y - second_origin.y), 0), orient_type='GLOBAL', 
+                value=(0, (first_origin.y - second_origin.y), 0), orient_type='GLOBAL',
                 orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)))
             cursor += x_scale
 
-        bpy.ops.object.select_all(action = 'DESELECT')
+        bpy.ops.object.select_all(action='DESELECT')
         return
 
 

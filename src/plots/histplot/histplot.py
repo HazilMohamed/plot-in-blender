@@ -1,3 +1,5 @@
+from principle_material import PrincipleMaterial
+from common_tools import CommonTools
 import bpy
 import bmesh
 import math
@@ -7,8 +9,6 @@ import json
 sys.path.append("src/classes/common_tools")
 sys.path.append("src/classes/materials")
 
-from common_tools import CommonTools
-from principle_material import PrincipleMaterial
 
 class HistPlot(CommonTools):
     """
@@ -30,8 +30,9 @@ class HistPlot(CommonTools):
     Methods:
         histplot            : The main function to plot.
     """
+
     def __init__(
-            self, x, grid_material, 
+            self, x, grid_material,
             number_material, bins=None, cat=None):
         self.x = x
         self.grid_material = grid_material
@@ -39,11 +40,12 @@ class HistPlot(CommonTools):
         self.bins = bins
         self.cat = cat
         self.bar_material = [
-            ("red",(1,0,0,1)), ("yellow",(1,1,0,1)), ("blue",(0,0,1,1)),
-            ("green",(0,1,0,1)), ("cyan",(0,1,1,1)), ("purple",(1,0,1,1)),
-            ("magenda",(1,0,0.25,1), ("orange",(1,0.25,0,1)))
+            ("red", (1, 0, 0, 1)), ("yellow", (1, 1, 0, 1)), ("blue", (0, 0, 1, 1)),
+            ("green", (0, 1, 0, 1)), ("cyan",
+                                      (0, 1, 1, 1)), ("purple", (1, 0, 1, 1)),
+            ("magenda", (1, 0, 0.25, 1), ("orange", (1, 0.25, 0, 1)))
         ]
-    
+
     def histplot(self):
         # Delete everything on the screen.
         self.clear_screen()
@@ -60,7 +62,8 @@ class HistPlot(CommonTools):
         size_bar = 1
         y_cat = []
         y_cursor = size_bar/2
-        x_new = list(range(math.ceil(min_val-1),math.ceil(max_val),self.bins))
+        x_new = list(range(math.ceil(min_val-1),
+                           math.ceil(max_val), self.bins))
         categories = list(set(self.cat))
         y_cursor = size_bar/2
 
@@ -94,11 +97,11 @@ class HistPlot(CommonTools):
             x_sub=11, y_sub=2, grid_material=self.grid_material)
 
         # Y axis will be numbered.
-        for num in range(11):    
+        for num in range(11):
             self.text_obj(
                 text=num*y_scale, text_type="y_plot", text_pos=(-(size_bar/2), -1, num),
-                text_rot=(math.radians(90),math.radians(0) ,math.radians(90)),
-                number_material=self.number_material)        
+                text_rot=(math.radians(90), math.radians(0), math.radians(90)),
+                number_material=self.number_material)
 
         # x axis will be numbered and graph will be plotted.
         for itr in range(len(x_new)):
@@ -111,45 +114,53 @@ class HistPlot(CommonTools):
                 bpy.ops.mesh.primitive_plane_add(
                     size=size_bar, enter_editmode=False, location=(0, y_cursor, z_cursor))
                 # The Bar name will be in the format of : "Bar No: 0, Cat: Male, Count: 6"
-                bpy.context.active_object.name = "Bar No: " + str(x_new[itr]) + ", Cat: " + str(categories[i]) + ", Count: " + str(y_cat[i][itr])
+                bpy.context.active_object.name = "Bar No: " + \
+                    str(x_new[itr]) + ", Cat: " + str(categories[i]
+                                                      ) + ", Count: " + str(y_cat[i][itr])
                 # The material will be created and applied.
                 activeObject = bpy.context.active_object
-                material = PrincipleMaterial("BarMaterial "+ str(categories[i]), self.bar_material[i][1]) 
-                activeObject.data.materials.append(material.create_principle_bsdf())
-            
+                material = PrincipleMaterial(
+                    "BarMaterial " + str(categories[i]), self.bar_material[i][1])
+                activeObject.data.materials.append(
+                    material.create_principle_bsdf())
+
                 # Scaling bar plots in x axis.
                 self.transform(
-                    mode='EDIT', type='EDGE', size_bar=size_bar, 
-                    x_scale=x_scale, indices=[2,3])      #[2,3] represents RHS of plane from user perspective.
-            
+                    mode='EDIT', type='EDGE', size_bar=size_bar,
+                    x_scale=x_scale, indices=[2, 3])  # [2,3] represents RHS of plane from user perspective.
+
                 # Extruding plane in Z-axis to make into bar.
-                bpy.ops.object.mode_set(mode = 'EDIT')
-                bpy.ops.mesh.select_mode(type = 'FACE')
-                bpy.ops.mesh.select_all(action = 'SELECT')
+                bpy.ops.object.mode_set(mode='EDIT')
+                bpy.ops.mesh.select_mode(type='FACE')
+                bpy.ops.mesh.select_all(action='SELECT')
                 bpy.ops.mesh.extrude_region_move(
-                    TRANSFORM_OT_translate={"value":(0, 0, (y_cat[i][itr]/y_scale))})
+                    TRANSFORM_OT_translate={"value": (0, 0, (y_cat[i][itr]/y_scale))})
                 z_cursor += (y_cat[i][itr]/y_scale)
-                bpy.ops.object.mode_set( mode = 'OBJECT' )
-                bpy.ops.object.origin_set(type='ORIGIN_CENTER_OF_MASS', center='MEDIAN')
-            
+                bpy.ops.object.mode_set(mode='OBJECT')
+                bpy.ops.object.origin_set(
+                    type='ORIGIN_CENTER_OF_MASS', center='MEDIAN')
+
             y_cursor += x_scale
             self.text_obj(
                 text=x_new[itr], text_type="X_plot", text_pos=(0, x_scale*itr, -1),
-                text_rot=(math.radians(90),math.radians(0),math.radians(90)),
-                text_scale=(min(1,x_scale/1.5), min(1,x_scale/1.5), min(1,x_scale/1.5)),
-                number_material=self.number_material) 
+                text_rot=(math.radians(90), math.radians(0), math.radians(90)),
+                text_scale=(min(1, x_scale/1.5),
+                            min(1, x_scale/1.5), min(1, x_scale/1.5)),
+                number_material=self.number_material)
 
         # To plot the last number of x axis
         self.text_obj(
             text=max(x_new)+self.bins, text_type="X_plot", text_pos=(0, 10, -1),
-            text_rot=(math.radians(90),math.radians(0),math.radians(90)),
-            text_scale=(min(1,x_scale/1.5), min(1,x_scale/1.5), min(1,x_scale/1.5)), 
-            number_material=self.number_material)    
-        bpy.ops.object.select_all(action = 'DESELECT')
+            text_rot=(math.radians(90), math.radians(0), math.radians(90)),
+            text_scale=(min(1, x_scale/1.5), min(1, x_scale/1.5),
+                        min(1, x_scale/1.5)),
+            number_material=self.number_material)
+        bpy.ops.object.select_all(action='DESELECT')
         return
 
+
 if __name__ == "__main__":
-    # Json parsing. 
+    # Json parsing.
     argv = sys.argv
     argv = argv[argv.index("--") + 1:]
     argv = json.loads(argv[0])
