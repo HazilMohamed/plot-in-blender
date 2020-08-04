@@ -24,10 +24,10 @@ import plotinblender as bl
 ```
 
 ### Usage
-Here is a quick way to use this.
+Here is a quick way to use it.
 <p align="center"><img src="https://raw.githubusercontent.com/hazilMohamed/data-visualization-using-blender/master/res/readme/plotting_example.gif"></p>
 
 For more, dive in to <a href="https://github.com/HazilMohamed/plot-in-blender/wiki">wiki</a> to know more about plot-in-blender.
 
 ### Contribute
-If you have a new idea for plotting or find out a bug or something, please feel free to raise an issue or pull request.
+If you have a new idea for plotting or found a bug or something, please feel free to raise an issue or pull request.
